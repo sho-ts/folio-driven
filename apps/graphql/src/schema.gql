@@ -36,6 +36,7 @@ type Products {
 
 type Query {
   creator(displayName: String!): Creator!
+  product(productId: String!): Product!
   products(input: SearchProductsInput): Products!
 }
 
