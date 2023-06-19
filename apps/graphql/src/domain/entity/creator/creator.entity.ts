@@ -4,13 +4,12 @@ import { CreatorId } from '@/domain/object/creator/creator-id.object';
 import { NickName } from '@/domain/object/creator/nick-name.object';
 import { Product } from '@/domain/entity/product/product.entity';
 import { DisplayName } from '@/domain/object/creator/display-name.object';
-import { Products } from '../aggregation/products.entity';
+import { Products } from '@/domain/entity/aggregation/products.entity';
 
 @Entity()
 @ObjectType()
 export class Creator {
   @PrimaryGeneratedColumn('uuid')
-  @Field(() => String)
   creatorId: CreatorId;
 
   @Column()
