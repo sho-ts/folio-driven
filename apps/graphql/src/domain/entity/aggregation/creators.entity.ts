@@ -1,5 +1,4 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Product } from '@/domain/entity/product/product.entity';
 import { CreatorId } from '@/domain/object/creator/creator-id.object';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 
