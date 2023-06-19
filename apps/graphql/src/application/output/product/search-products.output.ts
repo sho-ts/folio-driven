@@ -1,5 +1,5 @@
 import { Products } from '@/domain/entity/aggregation/products.entity';
 
-export class SearchProductOutput {
+export class SearchProductsOutput {
   constructor(readonly products: Products) {}
 }
