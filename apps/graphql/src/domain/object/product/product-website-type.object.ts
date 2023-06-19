@@ -16,14 +16,9 @@ export const PRODUCT_WEBSITE_TYPE_JAPANESE = {
   QIITA: 'Qiita',
 } as const;
 
-export type ProductWebsiteType = Brand<
-  Enum<typeof PRODUCT_WEBSITE_TYPE>,
-  'ProductWebsiteType'
->;
+export type ProductWebsiteType = Brand<Enum<typeof PRODUCT_WEBSITE_TYPE>, 'ProductWebsiteType'>;
 
-export const getProductWebsiteTypeJapanese = (
-  productWebsiteType: ProductWebsiteType,
-) => {
+export const getProductWebsiteTypeJapanese = (productWebsiteType: ProductWebsiteType) => {
   switch (productWebsiteType) {
     case PRODUCT_WEBSITE_TYPE.PRODUCT:
       return PRODUCT_WEBSITE_TYPE_JAPANESE.PRODUCT;
