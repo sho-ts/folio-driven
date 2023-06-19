@@ -36,4 +36,13 @@ type Products {
 
 type Query {
   creator(displayName: String!): Creator!
+  products(input: SearchProductsInput): Products!
+}
+
+input SearchProductsInput {
+  creatorDisplayName: String
+  keyword: String
+  limit: Int = 30
+  order: Int = 0
+  productIds: [String!]
 }
