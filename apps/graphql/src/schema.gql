@@ -4,7 +4,6 @@
 
 type Creator {
   createdAt: DateTime!
-  creatorId: String!
   deletedAt: DateTime!
   displayName: String!
   nickName: String!
@@ -20,6 +19,7 @@ scalar DateTime
 type Product {
   createdAt: DateTime!
   creator: Creator!
+  creatorId: String!
   deletedAt: DateTime!
   description: String!
   overview: String!

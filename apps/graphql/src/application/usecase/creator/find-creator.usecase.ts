@@ -11,6 +11,7 @@ export class FindCreatorUseCase {
   async handle(input: FindCreatorInput) {
     const creator = new Creator();
     creator.displayName = input.displayName;
+    creator.creatorId = input.creatorId;
 
     const result = await this.creatorRepository.find(creator);
 

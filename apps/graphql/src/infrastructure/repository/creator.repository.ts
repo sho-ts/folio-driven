@@ -11,6 +11,6 @@ export class CreatorRepository {
   ) {}
 
   find(creator: Creator) {
-    return this.repository.findOneBy({ displayName: creator.displayName });
+    return this.repository.findOneBy({ displayName: creator.displayName, creatorId: creator.creatorId });
   }
 }

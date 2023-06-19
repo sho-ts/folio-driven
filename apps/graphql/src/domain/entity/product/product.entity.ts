@@ -1,10 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinColumn, ManyToOne, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, OneToMany, JoinColumn, ManyToOne, DeleteDateColumn, RelationId } from 'typeorm';
 import { ProductId } from '@/domain/object/product/product-id.object';
 import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
 import { ProductStatus } from '@/domain/object/product/product-status.object';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { ProductWebsite } from './product-website.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { CreatorId } from '@/domain/object/creator/creator-id.object';
 
 @Entity()
 @ObjectType()
@@ -41,6 +42,10 @@ export class Product {
   @JoinColumn({ name: 'creatorId' })
   @Field(() => Creator)
   creator: Creator;
+
+  @RelationId((product: Product) => product.creator)
+  @Field(() => String)
+  creatorId: CreatorId;
 
   @CreateDateColumn()
   @Field(() => Date)

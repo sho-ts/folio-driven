@@ -13,7 +13,7 @@ export class CreatorResolver {
 
   @Query(() => Creator)
   async creator(@Args('displayName', { type: () => String }) displayName: DisplayName) {
-    const input = new FindCreatorInput(displayName);
+    const input = new FindCreatorInput({ displayName });
     const output = await this.findCreatorUseCase.handle(input);
 
     return output.creator;
