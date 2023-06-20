@@ -11,6 +11,9 @@
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
     },
     "lint": {},
+    "codegen": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
