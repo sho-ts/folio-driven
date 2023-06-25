@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type CognitoUser {
+  cognitoId: String!
+  email: String!
+}
+
 type Creator {
   cognitoId: String!
   createdAt: DateTime!
@@ -39,6 +44,7 @@ type Query {
   creator(displayName: String!): Creator!
   product(productId: String!): Product!
   products(input: SearchProductsInput): Products!
+  self: CognitoUser!
 }
 
 input SearchProductsInput {
