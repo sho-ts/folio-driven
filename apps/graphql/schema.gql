@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Creator {
+  cognitoId: String!
   createdAt: DateTime!
   deletedAt: DateTime!
   displayName: String!

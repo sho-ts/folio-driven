@@ -5,12 +5,17 @@ import { NickName } from '@/domain/object/creator/nick-name.object';
 import { Product } from '@/domain/entity/product/product.entity';
 import { DisplayName } from '@/domain/object/creator/display-name.object';
 import { Products } from '@/domain/entity/aggregation/products.entity';
+import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
 
 @Entity()
 @ObjectType()
 export class Creator {
   @PrimaryGeneratedColumn('uuid')
   creatorId: CreatorId;
+
+  @Column()
+  @Field(() => String)
+  cognitoId: CognitoId;
 
   @Column()
   @Field(() => String)
