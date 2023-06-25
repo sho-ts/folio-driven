@@ -4,17 +4,25 @@ import * as jwksClient from 'jwks-rsa';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { CognitoUser } from '@/domain/entity/cognito/cognito-user.entity';
 
-export const Guard = createParamDecorator(async (_, context: ExecutionContext) => {
-  const ctx = GqlExecutionContext.create(context).getContext();
-  const token: string = ctx.req?.headers?.authorization;
+export const Guard = createParamDecorator(
+  async (
+    options: {
+      required?: boolean;
+    } = {},
+    context: ExecutionContext,
+  ) => {
+    const ctx = GqlExecutionContext.create(context).getContext();
+    const token: string = ctx.req?.headers?.authorization;
 
-  try {
-    const docoded = await verifyToken(token);
-    return new CognitoUser(docoded);
-  } catch (error) {
-    throw new Error('Unauthorized');
-  }
-});
+    try {
+      const docoded = await verifyToken(token);
+      return new CognitoUser(docoded);
+    } catch (error) {
+      if (options.required) throw new Error('Unauthorized');
+      return null;
+    }
+  },
+);
 
 const getKey = (header: JwtHeader, callback: SigningKeyCallback) => {
   if (!header.kid) throw new Error('kid does not exist.');
