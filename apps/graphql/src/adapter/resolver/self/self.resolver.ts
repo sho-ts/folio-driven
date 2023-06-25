@@ -4,7 +4,7 @@ import { Guard } from '@/application/middleware/auth';
 
 @Resolver(() => CognitoUser)
 export class SelfResolver {
-  @Query(() => CognitoUser)
+  @Query(() => CognitoUser, { nullable: true })
   async self(@Guard() cognitoUser: CognitoUser) {
     return cognitoUser;
   }

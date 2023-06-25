@@ -44,7 +44,7 @@ type Query {
   creator(displayName: String!): Creator!
   product(productId: String!): Product!
   products(input: SearchProductsInput): Products!
-  self: CognitoUser!
+  self: CognitoUser
 }
 
 input SearchProductsInput {
