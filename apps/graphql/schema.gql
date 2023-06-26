@@ -7,6 +7,14 @@ type CognitoUser {
   email: String!
 }
 
+input CreateProductInput {
+  description: String
+  hashtags: [ProductHashtag!]
+  overview: String
+  title: String!
+  websites: [ProductWebsite!]
+}
+
 type Creator {
   cognitoId: String!
   createdAt: DateTime!
@@ -22,6 +30,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Mutation {
+  createProduct(input: CreateProductInput!): Product!
+}
+
 type Product {
   createdAt: DateTime!
   creator: Creator!
@@ -33,6 +45,15 @@ type Product {
   productStatus: Int!
   title: String!
   updatedAt: DateTime!
+}
+
+input ProductHashtag {
+  hashtagName: String!
+}
+
+input ProductWebsite {
+  url: String!
+  websiteType: Int!
 }
 
 type Products {

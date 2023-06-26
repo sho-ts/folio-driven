@@ -7,9 +7,10 @@ import { ProductResolver } from './product/product.resolver';
 import { BatchFindCreatorUseCase } from '@/application/usecase/creator/batch-find-creator.usecase';
 import { FindProductUseCase } from '@/application/usecase/product/find-prodcut.usecase';
 import { SelfResolver } from './self/self.resolver';
+import { CreateProductUseCase } from '@/application/usecase/product/create-product.usecase';
 
 @Module({
-  providers: [SelfResolver, CreatorResolver, ProductResolver, FindCreatorUseCase, BatchFindCreatorUseCase, FindProductUseCase, SearchProductsUseCase],
+  providers: [SelfResolver, CreatorResolver, ProductResolver, FindCreatorUseCase, BatchFindCreatorUseCase, FindProductUseCase, SearchProductsUseCase, CreateProductUseCase],
   imports: [UseCaseModule],
 })
 export class ResolverModule {}

@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent, Mutation } from '@nestjs/graphql';
 import { Product } from '@/domain/entity/product/product.entity';
 import { SearchProductsInput } from '@/application/input/product/search-products.input';
 import { SearchProductsUseCase } from '@/application/usecase/product/search-products.usecase';
@@ -9,10 +9,19 @@ import { BatchFindCreatorUseCase } from '@/application/usecase/creator/batch-fin
 import { ProductId } from '@/domain/object/product/product-id.object';
 import { FindProductUseCase } from '@/application/usecase/product/find-prodcut.usecase';
 import { FindProductInput } from '@/application/input/product/find-product.input';
+import { CreateProductInput } from '@/application/input/product/create-product.input';
+import { Guard } from '@/application/middleware/auth';
+import { CognitoUser } from '@/domain/entity/cognito/cognito-user.entity';
+import { CreateProductUseCase } from '@/application/usecase/product/create-product.usecase';
 
 @Resolver(() => Product)
 export class ProductResolver {
-  constructor(private findProductuseCase: FindProductUseCase, private searchProductsUseCase: SearchProductsUseCase, private batchFindCreatorUseCase: BatchFindCreatorUseCase) {}
+  constructor(
+    private findProductuseCase: FindProductUseCase,
+    private searchProductsUseCase: SearchProductsUseCase,
+    private batchFindCreatorUseCase: BatchFindCreatorUseCase,
+    private createProductUseCase: CreateProductUseCase,
+  ) {}
 
   @Query(() => Product)
   async product(@Args('productId') productId: ProductId) {
@@ -27,6 +36,14 @@ export class ProductResolver {
     const output = await this.searchProductsUseCase.handle(input);
 
     return output.products;
+  }
+
+  @Mutation(() => Product)
+  async createProduct(@Guard({ required: true }) user: CognitoUser, @Args('input') input: CreateProductInput) {
+    input.cognitoId = user.cognitoId;
+    const output = await this.createProductUseCase.handle(input);
+
+    return output.product;
   }
 
   @ResolveField(() => Creator)
