@@ -32,7 +32,7 @@ export class Product {
 
   @OneToMany(() => ProductHashtag, (productHashtag) => productHashtag.product)
   @JoinColumn()
-  hashTags: ProductHashtag[];
+  hashtags: ProductHashtag[];
 
   @OneToMany(() => ProductWebsite, (productWebsite) => productWebsite.product)
   @JoinColumn()
