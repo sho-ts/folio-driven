@@ -22,11 +22,11 @@ export class Product {
   @Field(() => String)
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   @Field(() => String)
   overview: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   @Field(() => String)
   description: string;
 
