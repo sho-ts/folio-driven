@@ -12,7 +12,7 @@ export class CreatorRepository {
   ) {}
 
   find(creator: Creator) {
-    return this.repository.findOneBy({ displayName: creator.displayName, creatorId: creator.creatorId });
+    return this.repository.findOneBy({ displayName: creator.displayName, creatorId: creator.creatorId, cognitoId: creator.cognitoId });
   }
 
   async search(creators: Creators) {
