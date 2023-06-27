@@ -2,31 +2,69 @@ import { CreateProductInput } from '@/application/input/product/create-product.i
 import { CreateProductOutput } from '@/application/output/product/create-product.output';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { Product } from '@/domain/entity/product/product.entity';
-import { CreatorId } from '@/domain/object/creator/creator-id.object';
-import { ProductId } from '@/domain/object/product/product-id.object';
+import { PRODUCT_STATUS } from '@/domain/object/product/product-status.object';
+import { CreatorRepository } from '@/infrastructure/repository/creator.repository';
+import { ProductHashtagRepository } from '@/infrastructure/repository/product-hashtag.repository';
+import { ProductWebsiteRepository } from '@/infrastructure/repository/product-website.repository';
 import { ProductRepository } from '@/infrastructure/repository/product.repository';
 import { Injectable } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class CreateProductUseCase {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(
+    @InjectEntityManager(process.env.DB_NAME)
+    private entityManager: EntityManager,
+    private productRepository: ProductRepository,
+    private productWebsiteRepository: ProductWebsiteRepository,
+    private productHashtagRepository: ProductHashtagRepository,
+    private creatorRepository: CreatorRepository,
+  ) {}
 
   async handle(input: CreateProductInput) {
-    const creator = new Creator();
-    creator.cognitoId = input.cognitoId;
+    try {
+      const result = await this.entityManager.transaction(async (maneger) => {
+        const creator = new Creator();
+        creator.cognitoId = input.cognitoId;
+        const findCreatorResult = await this.creatorRepository.find(creator);
 
-    const product = new Product();
-    product.title = input.title;
-    product.overview = input.overview;
-    product.description = input.description;
-    product.hashtags = input.hashtags;
-    product.websites = input.websites;
+        if (!findCreatorResult) throw new Error(`Creatorが見つかりません。 cognitoId: ${creator.cognitoId}`);
 
-    // const result = await this.productRepository.find(product);
-    const result = product;
-    result.productId = 'dummy' as ProductId;
-    result.creatorId = 'dummy' as CreatorId;
+        // Insert Prodcut
+        const product = new Product();
+        product.title = input.title;
+        product.overview = input.overview;
+        product.description = input.description;
+        product.hashtags = input.hashtags;
+        product.creator = findCreatorResult;
+        product.productStatus = PRODUCT_STATUS.PUBLIC;
+        const saveProductResult = await this.productRepository.save(product, maneger);
 
-    return new CreateProductOutput(result);
+        // Insert ProductWebsite
+        const websites = input.websites.map((website) => {
+          website.product = saveProductResult;
+          return website;
+        });
+        const saveWebsitesResult = await this.productWebsiteRepository.saveAll(websites, maneger);
+        saveProductResult.websites = saveWebsitesResult;
+
+        // Insert ProductHashtag
+        const hashtags = input.hashtags.map((hashtag) => {
+          hashtag.product = saveProductResult;
+          return hashtag;
+        });
+        const saveHashtagResult = await this.productHashtagRepository.saveAll(hashtags, maneger);
+        saveProductResult.hashtags = saveHashtagResult;
+
+        return saveProductResult;
+      });
+      return new CreateProductOutput(result);
+    } catch (e) {
+      if (e instanceof Error) {
+        console.error(`Productの作成に失敗しました。\n${e.message}`);
+      }
+      throw e;
+    }
   }
 }
