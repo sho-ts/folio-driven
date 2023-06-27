@@ -41,21 +41,25 @@ export class CreateProductUseCase {
         product.productStatus = PRODUCT_STATUS.PUBLIC;
         const saveProductResult = await this.productRepository.save(product, maneger);
 
-        // Insert ProductWebsite
-        const websites = input.websites.map((website) => {
-          website.product = saveProductResult;
-          return website;
-        });
-        const saveWebsitesResult = await this.productWebsiteRepository.saveAll(websites, maneger);
-        saveProductResult.websites = saveWebsitesResult;
-
-        // Insert ProductHashtag
-        const hashtags = input.hashtags.map((hashtag) => {
-          hashtag.product = saveProductResult;
-          return hashtag;
-        });
-        const saveHashtagResult = await this.productHashtagRepository.saveAll(hashtags, maneger);
-        saveProductResult.hashtags = saveHashtagResult;
+        // Insert ProductWebsite & ProductHashtag
+        const [saveProductWebsitesResult, saveProductHashtagsResult] = await Promise.all([
+          this.productWebsiteRepository.saveAll(
+            input.websites.map((website) => {
+              website.product = saveProductResult;
+              return website;
+            }),
+            maneger,
+          ),
+          this.productHashtagRepository.saveAll(
+            input.hashtags.map((hashtag) => {
+              hashtag.product = saveProductResult;
+              return hashtag;
+            }),
+            maneger,
+          ),
+        ]);
+        saveProductResult.websites = saveProductWebsitesResult;
+        saveProductResult.hashtags = saveProductHashtagsResult;
 
         return saveProductResult;
       });
