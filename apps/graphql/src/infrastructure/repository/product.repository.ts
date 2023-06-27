@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Product } from '@/domain/entity/product/product.entity';
 import { Products } from '@/domain/entity/aggregation/products.entity';
 import { Creator } from '@/domain/entity/creator/creator.entity';
@@ -41,5 +41,9 @@ export class ProductRepository {
     result.items = items;
 
     return result;
+  }
+
+  async save(product: Product, maneger?: EntityManager) {
+    return maneger?.getRepository(Product)?.save(product) ?? this.repository.save(product);
   }
 }
