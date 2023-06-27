@@ -1,8 +1,11 @@
-import { Brand, Enum } from '@/utility/type';
+import { Enum, withBrand } from '@/utility/type';
 
-export const PRODUCT_STATUS = {
-  DRAFT: 0,
-  PUBLIC: 1,
-} as const;
+export const PRODUCT_STATUS = withBrand(
+  {
+    DRAFT: 0,
+    PUBLIC: 1,
+  } as const,
+  'ProductStatus',
+);
 
-export type ProductStatus = Brand<Enum<typeof PRODUCT_STATUS>, 'ProductStatus'>;
+export type ProductStatus = Enum<typeof PRODUCT_STATUS>;
