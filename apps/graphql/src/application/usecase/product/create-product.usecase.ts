@@ -44,17 +44,11 @@ export class CreateProductUseCase {
         // Insert ProductWebsite & ProductHashtag
         const [saveProductWebsitesResult, saveProductHashtagsResult] = await Promise.all([
           this.productWebsiteRepository.saveAll(
-            input.websites.map((website) => {
-              website.product = saveProductResult;
-              return website;
-            }),
+            input.websites.map((website) => ({ ...website, product: saveProductResult })),
             maneger,
           ),
           this.productHashtagRepository.saveAll(
-            input.hashtags.map((hashtag) => {
-              hashtag.product = saveProductResult;
-              return hashtag;
-            }),
+            input.hashtags.map((hashtag) => ({ ...hashtag, product: saveProductResult })),
             maneger,
           ),
         ]);
