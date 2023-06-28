@@ -57,7 +57,7 @@ package:
 
 functions:
   register_user:
-    handler: bin/regiseter_user
+    handler: bin/register_user
     events:
       - httpApi:
           path: /register_user
