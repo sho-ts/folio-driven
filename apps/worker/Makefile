@@ -6,7 +6,7 @@ build:
 	go build -ldflags="-s -w" -o bin/register_user src/handler/register_user/main.go
 
 run-register_user:
-	./node_modules/.bin/serverless invoke local --docker -f register_user -d {}
+	npx sls invoke local --docker -f register_user -d {}
 
 clean:
 	rm -rf ./bin ./vendor go.sum
