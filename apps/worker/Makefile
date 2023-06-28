@@ -3,7 +3,7 @@
 build:
 	export GO111MODULE=on
 	go env GOARCH=amd64 GOOS=linux
-	go build -ldflags="-s -w" -o bin/register_user src/handler/register_user/main.go
+	go build -ldflags="-s -w" -o bin/register_user src/function/register_user/main.go
 
 run-register_user:
 	npx sls invoke local --docker -f register_user -d {}
