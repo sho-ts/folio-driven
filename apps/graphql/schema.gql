@@ -20,8 +20,8 @@ type Creator {
   createdAt: DateTime!
   deletedAt: DateTime!
   displayName: String!
-  nickName: String!
-  products: Products!
+  nickName: String
+  products: Products
   updatedAt: DateTime!
 }
 

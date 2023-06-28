@@ -17,9 +17,9 @@ export class Creator {
   @Field(() => String)
   cognitoId: CognitoId;
 
-  @Column()
-  @Field(() => String)
-  nickName: NickName;
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  nickName?: NickName;
 
   @Column({ unique: true })
   @Field(() => String)
@@ -27,7 +27,7 @@ export class Creator {
 
   @OneToMany(() => Product, (product) => product.creator)
   @JoinColumn()
-  @Field(() => Products)
+  @Field(() => Products, { nullable: true })
   products: Product[];
 
   @CreateDateColumn()
