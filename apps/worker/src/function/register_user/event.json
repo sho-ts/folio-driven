@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "region": "us-east-1",
+  "userPoolId": "your_user_pool_id",
+  "userName": "testuser",
+  "callerContext": {
+    "awsSdkVersion": "1.0",
+    "clientId": "your_client_id"
+  },
+  "triggerSource": "PreSignUp",
+  "request": {
+    "userAttributes": {
+      "sub": "testuser123",
+      "email": "testuser@example.com",
+      "user_type": "1"
+    },
+    "validationData": null
+  },
+  "response": {}
+}
