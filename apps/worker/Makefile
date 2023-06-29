@@ -6,7 +6,7 @@ build:
 	go build -ldflags="-s -w" -o bin/register_user src/function/register_user/main.go
 
 run-register_user:
-	npx sls invoke local --docker -f register_user -d {}
+	make build && npx sls invoke local --docker -f register_user --path ./src/function/register_user/event.json
 
 clean:
 	rm -rf ./bin ./vendor go.sum
