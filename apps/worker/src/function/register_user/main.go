@@ -1,42 +1,31 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/sho-ts/folio-driven/src/application/input"
+	"github.com/sho-ts/folio-driven/src/application/usecase"
 )
 
-// Response is of type APIGatewayProxyResponse since we're leveraging the
-// AWS Lambda Proxy Request functionality (default behavior)
-//
-// https://serverless.com/framework/docs/providers/aws/events/apigateway/#lambda-proxy-integration
-type Response events.APIGatewayProxyResponse
+type Response = events.CognitoEventUserPoolsPreSignupResponse
 
-// Handler is our lambda handler invoked by the `lambda.Start` function call
-func Handler(ctx context.Context) (Response, error) {
-	var buf bytes.Buffer
-
-	body, err := json.Marshal(map[string]interface{}{
-		"message": "Go Serverless v1.0! Your function executed successfully!",
-	})
+// Cognito新規登録時にDBにデータを登録する
+func Handler(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (*Response, error) {
+	i, err := input.NewRegisterUserInput(event)
 	if err != nil {
-		return Response{StatusCode: 404}, err
-	}
-	json.HTMLEscape(&buf, body)
-
-	resp := Response{
-		StatusCode:      200,
-		IsBase64Encoded: false,
-		Body:            buf.String(),
-		Headers: map[string]string{
-			"Content-Type":           "application/json",
-			"X-MyCompany-Func-Reply": "hello-handler",
-		},
+		return nil, err
 	}
 
-	return resp, nil
+	o, err := usecase.NewRegisterUseCase().Handle(i)
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println("登録完了\nCognitoId: ", o.CognitoUser.CognitoId.Value, "\nUserType: ", o.CognitoUser.UserType.Value)
+
+	return &Response{}, nil
 }
 
 func main() {
