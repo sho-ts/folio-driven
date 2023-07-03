@@ -9,10 +9,8 @@ import (
 	"github.com/sho-ts/folio-driven/src/application/usecase"
 )
 
-type Response = events.CognitoEventUserPoolsPreSignupResponse
-
 // Cognito新規登録時にDBにデータを登録する
-func Handler(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (*Response, error) {
+func Handler(ctx context.Context, event events.CognitoEventUserPoolsPostConfirmation) (*events.CognitoEventUserPoolsPostConfirmation, error) {
 	i, err := input.NewRegisterUserInput(event)
 	if err != nil {
 		return nil, err
@@ -25,7 +23,7 @@ func Handler(ctx context.Context, event events.CognitoEventUserPoolsPreSignup) (
 
 	fmt.Println("登録完了\nCognitoId: ", o.CognitoUser.CognitoId.Value, "\nUserType: ", o.CognitoUser.UserType.Value)
 
-	return &Response{}, nil
+	return &event, nil
 }
 
 func main() {
