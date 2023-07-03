@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUser, ISignUpResult, AuthenticationDetails, CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUser, ISignUpResult, AuthenticationDetails, CognitoUserSession, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,
@@ -7,12 +7,23 @@ const userPool = new CognitoUserPool({
 
 export const signUp = (email: string, password: string) => {
   return new Promise<ISignUpResult>((resolve, reject) => {
-    userPool.signUp(email, password, [], [], (error, result) => {
-      if (error) reject(error);
-      if (!result) reject(new Error('result was not returned'));
+    userPool.signUp(
+      email,
+      password,
+      [
+        new CognitoUserAttribute({
+          Name: 'custom:user_type',
+          Value: '1', // Todo: userTypeを引数で渡す
+        }),
+      ],
+      [],
+      (error, result) => {
+        if (error) reject(error);
+        if (!result) reject(new Error('result was not returned'));
 
-      return resolve(result!);
-    });
+        return resolve(result!);
+      }
+    );
   });
 };
 
