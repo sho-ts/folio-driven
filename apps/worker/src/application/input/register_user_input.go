@@ -11,7 +11,7 @@ type RegisterUserInput struct {
 	UserType  *object.UserType
 }
 
-func NewRegisterUserInput(event events.CognitoEventUserPoolsPreSignup) (*RegisterUserInput, error) {
+func NewRegisterUserInput(event events.CognitoEventUserPoolsPostConfirmation) (*RegisterUserInput, error) {
 	cognito_id, err := object.NewCognitoId(event.Request.UserAttributes["sub"])
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func NewRegisterUserInput(event events.CognitoEventUserPoolsPreSignup) (*Registe
 		return nil, err
 	}
 
-	user_type, err := object.NewUserType(event.Request.UserAttributes["user_type"])
+	user_type, err := object.NewUserType(event.Request.UserAttributes["custom:user_type"])
 	if err != nil {
 		return nil, err
 	}
