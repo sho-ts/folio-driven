@@ -12,7 +12,7 @@
     "userAttributes": {
       "sub": "testuser123",
       "email": "testuser@example.com",
-      "user_type": "1"
+      "custom:user_type": "1"
     },
     "validationData": null
   },
