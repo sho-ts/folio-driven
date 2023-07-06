@@ -7,7 +7,7 @@ import (
 )
 
 type ICreatorRepository interface {
-	Create(creator *entity.CognitoUser) error
+	Create(creator *entity.Creator) error
 }
 
 type CreatorRepository struct {
