@@ -1,13 +1,20 @@
 package output
 
-import "github.com/sho-ts/folio-driven/src/domain/entity"
+import (
+	"github.com/sho-ts/folio-driven/src/domain/entity"
+	"github.com/sho-ts/folio-driven/src/domain/object/cognito_user"
+)
 
-type RegisteruserOutput struct{
-	CognitoUser *entity.CognitoUser
+type RegisteruserOutput struct {
+	Creator   *entity.Creator
+	CognitoId *object.CognitoId
+	UserType  *object.UserType
 }
 
-func NewRegisterUserOutput(cognitoUser *entity.CognitoUser) *RegisteruserOutput {
+func NewRegisterUserOutput(creator *entity.Creator, cognitoId *object.CognitoId, userType *object.UserType) *RegisteruserOutput {
 	return &RegisteruserOutput{
-		CognitoUser: cognitoUser,
+		Creator:   creator,
+		CognitoId: cognitoId,
+		UserType:  userType,
 	}
 }

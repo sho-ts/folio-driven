@@ -34,7 +34,7 @@ func Handler(ctx context.Context, event events.CognitoEventUserPoolsPostConfirma
 		return nil, err
 	}
 
-	fmt.Println("登録完了\nCognitoId: ", o.CognitoUser.CognitoId.Value, "\nUserType: ", o.CognitoUser.UserType.Value)
+	fmt.Println("登録完了\nCognitoId: ", o.CognitoId.Value, "\nUserType: ", o.UserType.Value)
 
 	return &event, nil
 }
