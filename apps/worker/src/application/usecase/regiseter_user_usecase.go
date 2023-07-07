@@ -1,9 +1,11 @@
 package usecase
 
 import (
+	"github.com/google/uuid"
 	"github.com/sho-ts/folio-driven/src/application/input"
 	"github.com/sho-ts/folio-driven/src/application/output"
 	"github.com/sho-ts/folio-driven/src/domain/entity"
+	"github.com/sho-ts/folio-driven/src/domain/object/creator"
 	"github.com/sho-ts/folio-driven/src/infrastructure/repository"
 )
 
@@ -18,11 +20,26 @@ func NewRegisterUseCase(creatorRepository repository.ICreatorRepository) *Regist
 }
 
 func (u *RegisterUserUseCase) Handle(input *input.RegisterUserInput) (*output.RegisteruserOutput, error) {
-	cognitoUser := entity.CognitoUser{
-		CognitoId: input.CognitoId,
-		Email:     input.Email,
-		UserType:  input.UserType,
+	displayName, err := object.NewDisplayName(uuid.NewString())
+	if err != nil {
+		return nil, err
 	}
 
-	return output.NewRegisterUserOutput(&cognitoUser), nil
+	creatorId, err := object.NewCreatorId(uuid.NewString())
+	if err != nil {
+		return nil, err
+	}
+
+	creator := entity.Creator{
+		CognitoId:   input.CognitoId,
+		CreatorId: creatorId,
+		DisplayName: displayName,
+	}
+
+	err = u.creatorRepository.Create(&creator)
+	if err != nil {
+		return nil, err
+	}
+
+	return output.NewRegisterUserOutput(&creator, input.CognitoId, input.UserType), nil
 }
