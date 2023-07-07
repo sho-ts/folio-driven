@@ -7,6 +7,6 @@ import (
 
 type Creator struct {
 	CognitoId   *cognito_user_object.CognitoId
-	CreatorId   *creator_object.CognitoId
+	CreatorId   *creator_object.CreatorId
 	DisplayName *creator_object.DisplayName
 }
