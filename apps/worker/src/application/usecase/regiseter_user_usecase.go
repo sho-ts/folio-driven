@@ -13,13 +13,13 @@ type RegisterUserUseCase struct {
 	creatorRepository repository.ICreatorRepository
 }
 
-func NewRegisterUseCase(creatorRepository repository.ICreatorRepository) *RegisterUserUseCase {
+func NewRegisterUserUseCase(creatorRepository repository.ICreatorRepository) *RegisterUserUseCase {
 	return &RegisterUserUseCase{
 		creatorRepository: creatorRepository,
 	}
 }
 
-func (u *RegisterUserUseCase) Handle(input *input.RegisterUserInput) (*output.RegisteruserOutput, error) {
+func (u *RegisterUserUseCase) Handle(input *input.RegisterUserInput) (*output.RegisterUserOutput, error) {
 	displayName, err := object.NewDisplayName(uuid.NewString())
 	if err != nil {
 		return nil, err

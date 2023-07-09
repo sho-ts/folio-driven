@@ -15,7 +15,7 @@ func bootstrap() *usecase.RegisterUserUseCase {
 	db := repository.CreateDBConnection()
 
 	creatorRepository := repository.NewCreatorRepository(db)
-	interactor := usecase.NewRegisterUseCase(creatorRepository)
+	interactor := usecase.NewRegisterUserUseCase(creatorRepository)
 
 	return interactor
 }
