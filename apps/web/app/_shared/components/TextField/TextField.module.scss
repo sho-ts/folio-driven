@@ -1,0 +1,10 @@
+.body {
+  &:not(:placeholder-shown), &:focus {
+    + span {
+      transform: translateY(-1em) scale(0.7);
+    }
+  }
+  &::placeholder {
+    color: transparent;
+  }
+}
