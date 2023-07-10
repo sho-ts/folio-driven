@@ -1,4 +1,4 @@
-package repository
+package dao
 
 import (
 	"fmt"
@@ -7,7 +7,15 @@ import (
 	"os"
 )
 
-func CreateDBConnection() *gorm.DB {
+type IDatabase interface {
+	GetConnection() *gorm.DB
+}
+
+type Database struct {
+	connection *gorm.DB
+}
+
+func NewDatabase() *Database {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASS"),
@@ -16,10 +24,16 @@ func CreateDBConnection() *gorm.DB {
 		os.Getenv("DB_NAME"),
 	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	return db
+	return &Database{
+		connection,
+	}
+}
+
+func (d *Database) GetConnection () *gorm.DB {
+	return d.connection
 }

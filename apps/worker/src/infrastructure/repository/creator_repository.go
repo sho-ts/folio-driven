@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sho-ts/folio-driven/src/domain/entity"
-	"gorm.io/gorm"
+	"github.com/sho-ts/folio-driven/src/infrastructure/dao"
 )
 
 type ICreatorRepository interface {
@@ -12,17 +12,17 @@ type ICreatorRepository interface {
 }
 
 type CreatorRepository struct {
-	db *gorm.DB
+	db dao.IDatabase
 }
 
-func NewCreatorRepository(db *gorm.DB) *CreatorRepository {
+func NewCreatorRepository(db dao.IDatabase) *CreatorRepository {
 	return &CreatorRepository{
 		db,
 	}
 }
 
 func (r *CreatorRepository) Create(creator *entity.Creator) error {
-	result := r.db.Exec("INSERT INTO creator SET creatorId = ?, displayName = ?, cognitoId = ?",
+	result := r.db.GetConnection().Exec("INSERT INTO creator SET creatorId = ?, displayName = ?, cognitoId = ?",
 		creator.CreatorId.Value,
 		creator.DisplayName.Value,
 		creator.CognitoId.Value,

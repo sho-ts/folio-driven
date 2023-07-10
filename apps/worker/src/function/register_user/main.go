@@ -7,13 +7,13 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/sho-ts/folio-driven/src/application/input"
 	"github.com/sho-ts/folio-driven/src/application/usecase"
+	"github.com/sho-ts/folio-driven/src/infrastructure/dao"
 	"github.com/sho-ts/folio-driven/src/infrastructure/repository"
 )
 
 // 初期化
 func bootstrap() *usecase.RegisterUserUseCase {
-	db := repository.CreateDBConnection()
-
+	db := dao.NewDatabase()
 	creatorRepository := repository.NewCreatorRepository(db)
 	interactor := usecase.NewRegisterUserUseCase(creatorRepository)
 
