@@ -3,5 +3,5 @@ type Props = {
 };
 
 export const Main = ({ children }: Props) => {
-  return <div className="max-w-7xl mx-auto w-full py-24 px-4">{children}</div>;
+  return <div className="max-w-7xl mx-auto w-full py-24 px-4 flex-1">{children}</div>;
 };
