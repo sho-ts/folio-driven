@@ -2,6 +2,7 @@
   &:not(:placeholder-shown), &:focus {
     + span {
       transform: translateY(-1em) scale(0.7);
+      color: #0ea5e9;
     }
   }
   &::placeholder {
