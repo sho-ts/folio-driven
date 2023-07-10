@@ -7,7 +7,7 @@ type BaseProps = {
   className?: string;
   fill?: boolean;
   placeholder?: string;
-  text?: string;
+  error?: boolean;
 };
 
 type GenericCompoenntProps<T> = T extends number
@@ -20,7 +20,7 @@ type Props<T extends number | undefined> = BaseProps & {
   rows?: T;
 } & GenericCompoenntProps<T>;
 
-export const TextField = forwardRef<any, BaseProps>(function TextField({ className, fill, placeholder, ...props }, ref) {
+export const TextField = forwardRef<any, BaseProps>(function TextField({ className, fill, placeholder, error, ...props }, ref) {
   const Body = props.rows ? 'textarea' : 'input';
 
   return (
@@ -29,10 +29,7 @@ export const TextField = forwardRef<any, BaseProps>(function TextField({ classNa
         ref={ref}
         placeholder={placeholder}
         data-classname="textfield-body"
-        className={clsx(
-          'resize-none border-b border-neutral-200 border-solid block px-4 pt-5 pb-1 outline-none focus:border-sky-500 transition duration-300 ease-in-out w-full block',
-          styles.body
-        )}
+        className={clsx('resize-none border-b border-neutral-200 border-solid block px-4 pt-5 pb-1 outline-none focus:border-sky-500 transition duration-300 ease-in-out w-full block', error && 'bg-red-50 focus:border-red-500 border-red-200', styles.body)}
         {...props}
       />
       <span className="pointer-events-none text-slate-400 flex absolute top-5 left-4 transition duration-300 ease-in-out origin-top-left">{placeholder}</span>
