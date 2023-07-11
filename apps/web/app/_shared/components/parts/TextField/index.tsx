@@ -30,13 +30,13 @@ export const TextField = forwardRef<any, BaseProps>(function TextField({ classNa
         placeholder={placeholder}
         data-classname="textfield-body"
         className={clsx(
-          'resize-none border-b border-neutral-200 border-solid block px-4 pt-5 pb-1 outline-none focus:border-sky-500 transition duration-300 ease-in-out w-full block',
+          'bg-slate-50 rounded-t-md resize-none border-b border-neutral-200 border-solid block px-4 pt-6 pb-1 outline-none focus:border-sky-500 transition duration-300 ease-in-out w-full block',
           error && 'bg-red-50 focus:border-red-500 border-red-200',
           styles.body
         )}
         {...props}
       />
-      <label className="pointer-events-none text-slate-400 flex absolute top-5 left-4 transition duration-300 ease-in-out origin-top-left">{placeholder}</label>
+      <label className="pointer-events-none text-slate-400 flex absolute top-3.5 left-4 transition duration-300 ease-in-out origin-top-left">{placeholder}</label>
     </div>
   );
 }) as <T extends number | undefined = undefined>(props: Props<T>, ref: T extends number ? HTMLInputElement : HTMLTextAreaElement) => JSX.Element;
