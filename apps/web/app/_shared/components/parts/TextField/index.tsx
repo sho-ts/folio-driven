@@ -28,7 +28,6 @@ export const TextField = forwardRef<any, BaseProps>(function TextField({ classNa
       <Body
         ref={ref}
         placeholder={placeholder}
-        data-classname='textfield-body'
         className={clsx(
           'block w-full resize-none rounded-t-md border-b border-solid border-neutral-200 px-4 pb-1 pt-6 outline-none transition duration-300 ease-in-out focus:border-sky-500',
           !error ? 'bg-slate-50' : 'border-red-200 bg-red-50 focus:border-red-500',
