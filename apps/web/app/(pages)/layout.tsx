@@ -1,4 +1,6 @@
 import { Header, Layout, Main } from '@/app/_shared/components/layouts';
+import { Fragment } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 type Props = {
   children?: React.ReactNode;
@@ -6,10 +8,13 @@ type Props = {
 
 const PageLayout = ({ children }: Props) => {
   return (
-    <Layout>
-      <Header />
-      <Main>{children}</Main>
-    </Layout>
+    <Fragment>
+      <Toaster position='top-right' />
+      <Layout>
+        <Header />
+        <Main>{children}</Main>
+      </Layout>
+    </Fragment>
   );
 };
 
