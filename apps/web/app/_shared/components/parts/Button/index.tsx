@@ -5,18 +5,29 @@ type Props<T extends ElementType | FC> = {
   as?: T;
   children?: React.ReactNode;
   className?: string;
+  disabled?: boolean;
   fill?: boolean;
 } & ComponentPropsWithRef<T>;
 
-export const Button = <T extends ElementType | FC = 'button'>({ as: tag, fill, children, className, ...props }: Props<T>) => {
+export const Button = <T extends ElementType | FC = 'button'>({
+  as: tag,
+  fill,
+  children,
+  className,
+  disabled,
+  ...props
+}: Props<T>) => {
   const Tag = tag || 'button';
 
   return (
     <Tag
       {...props}
       className={clsx(
-        'items-centerjustify-center inline-flex rounded bg-gradient-to-r from-sky-300 to-sky-400 px-6 py-2 text-white transition duration-300 ease-in-out hover:opacity-80',
-        fill && 'flex w-full ',
+        'inline-flex items-center justify-center rounded px-6 py-2 transition-opacity duration-300 ease-in-out hover:opacity-80',
+        !disabled
+          ? 'bg-gradient-to-r from-sky-300 to-sky-400 text-white'
+          : 'bg-gray-200 text-gray-300',
+        fill && 'flex w-full',
         className,
       )}
     >
