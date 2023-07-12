@@ -10,7 +10,13 @@ type Props<T extends AllowElements> = {
   bold?: boolean;
 } & ComponentPropsWithoutRef<T>;
 
-export const Heading = <T extends AllowElements = 'h2'>({ as: tag, className, bold, size = 'md', ...props }: Props<T>) => {
+export const Heading = <T extends AllowElements = 'h2'>({
+  as: tag,
+  className,
+  bold,
+  size = 'md',
+  ...props
+}: Props<T>) => {
   const Tag = tag || 'h2';
 
   return (

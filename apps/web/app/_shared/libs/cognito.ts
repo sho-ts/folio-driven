@@ -1,4 +1,11 @@
-import { CognitoUserPool, CognitoUser, ISignUpResult, AuthenticationDetails, CognitoUserSession, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import {
+  CognitoUserPool,
+  CognitoUser,
+  ISignUpResult,
+  AuthenticationDetails,
+  CognitoUserSession,
+  CognitoUserAttribute,
+} from 'amazon-cognito-identity-js';
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,

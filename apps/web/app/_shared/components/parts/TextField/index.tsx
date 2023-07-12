@@ -20,7 +20,10 @@ type Props<T extends number | undefined> = BaseProps & {
   rows?: T;
 } & GenericComponentProps<T>;
 
-export const TextField = forwardRef<any, BaseProps>(function TextField({ className, fill, placeholder, error, ...props }, ref) {
+export const TextField = forwardRef<any, BaseProps>(function TextField(
+  { className, fill, placeholder, error, ...props },
+  ref,
+) {
   const Body = props.rows ? 'textarea' : 'input';
 
   return (
@@ -35,7 +38,12 @@ export const TextField = forwardRef<any, BaseProps>(function TextField({ classNa
         )}
         {...props}
       />
-      <label className='pointer-events-none absolute left-4 top-3.5 flex origin-top-left text-slate-400 transition duration-300 ease-in-out'>{placeholder}</label>
+      <label className='pointer-events-none absolute left-4 top-3.5 flex origin-top-left text-slate-400 transition duration-300 ease-in-out'>
+        {placeholder}
+      </label>
     </div>
   );
-}) as <T extends number | undefined = undefined>(props: Props<T>, ref: T extends number ? HTMLInputElement : HTMLTextAreaElement) => JSX.Element;
+}) as <T extends number | undefined = undefined>(
+  props: Props<T>,
+  ref: T extends number ? HTMLInputElement : HTMLTextAreaElement,
+) => JSX.Element;
