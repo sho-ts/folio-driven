@@ -1,4 +1,4 @@
-import { LoginTemplate } from '@/app/_features/login/components/templates';
+import { LoginTemplate } from '@/app/_features/authentication/components/templates';
 
 const Login = () => {
   return <LoginTemplate />;

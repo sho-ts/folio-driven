@@ -1,4 +1,4 @@
-import { LoginForm, FormContainer } from '@/app/_features/login/components/blocks';
+import { LoginForm, FormContainer } from '@/app/_features/authentication/components/blocks';
 import { Heading } from '@/app/_shared/components/parts';
 
 export const LoginTemplate = () => {
