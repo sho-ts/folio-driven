@@ -6,6 +6,7 @@ import { useTransition } from 'react';
 import { handleLogin } from '@/app/_features/authentication/actions/login';
 import { LoginFormPresenter } from './presenter';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 export const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -16,9 +17,10 @@ export const LoginForm = () => {
       startTransition(async () => {
         try {
           await handleLogin(data);
+          toast.success('ログインに成功しました！');
           router.replace('/');
         } catch (e) {
-          alert('error');
+          toast.error('メールアドレスかパスワードが\n間違っています。');
         }
       });
     },
