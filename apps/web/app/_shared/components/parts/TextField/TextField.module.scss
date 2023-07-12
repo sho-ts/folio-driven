@@ -1,5 +1,6 @@
 .body {
-  &:not(:placeholder-shown), &:focus {
+  &:not(:placeholder-shown),
+  &:focus {
     + label {
       transform: translateY(-0.45em) scale(0.7);
       color: #0ea5e9;

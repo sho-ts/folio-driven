@@ -3,5 +3,5 @@ type Props = {
 };
 
 export const Layout = ({ children }: Props) => {
-  return <div className="flex min-h-screen flex-col h-full">{children}</div>;
+  return <div className='flex h-full min-h-screen flex-col'>{children}</div>;
 };

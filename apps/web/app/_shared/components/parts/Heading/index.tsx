@@ -23,8 +23,8 @@ export const Heading = <T extends AllowElements = 'h2'>({ as: tag, className, bo
           'text-3xl': size === 'xl',
           bold: bold,
         },
-        'pb-2 border-b border-neutral-200',
-        className
+        'border-b border-neutral-200 pb-2',
+        className,
       )}
     />
   );

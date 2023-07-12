@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write ./app/**/*",
     "codegen": "graphql-codegen --config ./schema/codegen.ts --watch"
   },
   "dependencies": {

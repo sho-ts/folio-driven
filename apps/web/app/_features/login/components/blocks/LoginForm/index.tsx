@@ -21,17 +21,12 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<Schema>({ resolver: zodResolver(schema) });
 
-  const onSubmit = useCallback(
-    (data: Schema) => {
-
-    },
-    []
-  );
+  const onSubmit = useCallback((data: Schema) => {}, []);
 
   return (
     <>
-      <FormControl errors={[errors.email?.message]} render={(props) => <TextField {...register('email')} fill placeholder="メールアドレス" {...props} />} />
-      <FormControl errors={[errors.password?.message]} render={(props) => <TextField {...register('password')} fill placeholder="パスワード" {...props} />} />
+      <FormControl errors={[errors.email?.message]} render={(props) => <TextField {...register('email')} fill placeholder='メールアドレス' {...props} />} />
+      <FormControl errors={[errors.password?.message]} render={(props) => <TextField {...register('password')} fill placeholder='パスワード' {...props} />} />
       <Button fill onClick={handleSubmit(onSubmit)}>
         ログイン
       </Button>

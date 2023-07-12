@@ -1,9 +1,9 @@
 export const Header = () => {
   return (
     <header>
-      <nav className="z-[10000] fixed t-0 l-0 w-full bg-white pl-4 h-14 flex items-center border-b border-neutral-200 border-solid">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="text-sky-500 text-lg font-bold">FOLIO DRIVEN</div>
+      <nav className='t-0 l-0 fixed z-[10000] flex h-14 w-full items-center border-b border-solid border-neutral-200 bg-white pl-4'>
+        <div className='mx-auto w-full max-w-7xl'>
+          <div className='text-lg font-bold text-sky-500'>FOLIO DRIVEN</div>
         </div>
       </nav>
     </header>

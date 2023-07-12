@@ -8,14 +8,14 @@ export const FormControl = ({ render, errors }: Props) => {
   const hasError = (errors ?? []).filter(Boolean).length > 0;
 
   return (
-    <div className="w-full">
+    <div className='w-full'>
       {render?.({
         error: hasError,
       })}
       {hasError && (
-        <ul className="flex gap-1 mt-2 w-full">
+        <ul className='mt-2 flex w-full gap-1'>
           {errors?.map((error, i) => (
-            <li key={i} className="text-red-400 text-sm">
+            <li key={i} className='text-sm text-red-400'>
               {error}
             </li>
           ))}

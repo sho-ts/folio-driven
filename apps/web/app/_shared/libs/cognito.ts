@@ -22,7 +22,7 @@ export const signUp = (email: string, password: string) => {
         if (!result) reject(new Error('result was not returned'));
 
         return resolve(result!);
-      }
+      },
     );
   });
 };
@@ -46,7 +46,7 @@ export const signIn = (email: string, password: string) => {
         onFailure: (error) => {
           reject(error);
         },
-      }
+      },
     );
   });
 };

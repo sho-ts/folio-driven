@@ -12,7 +12,14 @@ export const Button = <T extends ElementType | FC = 'button'>({ as: tag, fill, c
   const Tag = tag || 'button';
 
   return (
-    <Tag {...props} className={clsx('rounded py-2 px-6 bg-gradient-to-r from-sky-300 to-sky-400 text-white inline-flex items-center justify-center transition duration-300 ease-in-out hover:opacity-80', fill && 'flex w-full ', className)}>
+    <Tag
+      {...props}
+      className={clsx(
+        'items-centerjustify-center inline-flex rounded bg-gradient-to-r from-sky-300 to-sky-400 px-6 py-2 text-white transition duration-300 ease-in-out hover:opacity-80',
+        fill && 'flex w-full ',
+        className,
+      )}
+    >
       {children}
     </Tag>
   );

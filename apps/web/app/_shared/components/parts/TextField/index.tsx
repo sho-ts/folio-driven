@@ -11,7 +11,7 @@ type BaseProps = {
 };
 
 type GenericComponentProps<T> = T extends number
-  ? Omit<ComponentPropsWithoutRef<'textarea'>,'children' | 'cols'>
+  ? Omit<ComponentPropsWithoutRef<'textarea'>, 'children' | 'cols'>
   : Omit<ComponentPropsWithoutRef<'input'>, 'children' | 'type'> & {
       type?: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
     };
@@ -24,19 +24,19 @@ export const TextField = forwardRef<any, BaseProps>(function TextField({ classNa
   const Body = props.rows ? 'textarea' : 'input';
 
   return (
-    <div className={clsx('relative inline-flex', fill && 'w-full flex', className)}>
+    <div className={clsx('relative inline-flex', fill && 'flex w-full', className)}>
       <Body
         ref={ref}
         placeholder={placeholder}
-        data-classname="textfield-body"
+        data-classname='textfield-body'
         className={clsx(
-          'rounded-t-md resize-none border-b border-neutral-200 border-solid block px-4 pt-6 pb-1 outline-none focus:border-sky-500 transition duration-300 ease-in-out w-full block',
-          !error ? 'bg-slate-50' : 'bg-red-50 focus:border-red-500 border-red-200',
-          styles.body
+          'block w-full resize-none rounded-t-md border-b border-solid border-neutral-200 px-4 pb-1 pt-6 outline-none transition duration-300 ease-in-out focus:border-sky-500',
+          !error ? 'bg-slate-50' : 'border-red-200 bg-red-50 focus:border-red-500',
+          styles.body,
         )}
         {...props}
       />
-      <label className="pointer-events-none text-slate-400 flex absolute top-3.5 left-4 transition duration-300 ease-in-out origin-top-left">{placeholder}</label>
+      <label className='pointer-events-none absolute left-4 top-3.5 flex origin-top-left text-slate-400 transition duration-300 ease-in-out'>{placeholder}</label>
     </div>
   );
 }) as <T extends number | undefined = undefined>(props: Props<T>, ref: T extends number ? HTMLInputElement : HTMLTextAreaElement) => JSX.Element;
