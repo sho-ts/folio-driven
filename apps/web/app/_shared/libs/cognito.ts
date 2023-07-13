@@ -1,3 +1,5 @@
+'use server';
+
 import {
   CognitoUserPool,
   CognitoUser,
@@ -5,15 +7,40 @@ import {
   AuthenticationDetails,
   CognitoUserSession,
   CognitoUserAttribute,
-  CognitoIdToken,
-  CognitoAccessToken,
-  CognitoRefreshToken,
+  ICognitoStorage,
 } from 'amazon-cognito-identity-js';
 import { cookies } from 'next/headers';
+
+/**
+ * バックエンドでcognito-identity-jsを使用する場合、
+ * デフォルトでユーザーの認証情報をインメモリーのストレージに保存してしまうため、
+ * ブラウザのCookieに保存できるようにストレージを自前で実装する
+ * - <https://github.com/aws-amplify/amplify-js/blob/master/packages/amazon-cognito-identity-js/src/StorageHelper.js>
+ * - <https://github.com/aws-amplify/amplify-js/blob/master/packages/amazon-cognito-identity-js/src/CognitoUser.js>
+ */
+const userStorage: ICognitoStorage = {
+  setItem(key: string, value: string) {
+    cookies().set(key, value, {
+      httpOnly: true,
+      secure: true,
+    });
+  },
+  getItem(key: string) {
+    const data = cookies().get(key);
+
+    if (!data) return null;
+    return data.value;
+  },
+  removeItem(key: string) {
+    cookies().delete(key);
+  },
+  clear() {},
+};
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,
   ClientId: process.env.NEXT_PUBLIC_AWS_COGNITO_CLIENT_ID as string,
+  Storage: userStorage,
 });
 
 export const signUp = (email: string, password: string) => {
@@ -38,21 +65,22 @@ export const signUp = (email: string, password: string) => {
   });
 };
 
-export const signIn = (email: string, password: string) => {
+export const signIn = async (email: string, password: string) => {
   const user = new CognitoUser({
     Username: email,
     Pool: userPool,
+    Storage: userStorage,
   });
 
-  return new Promise<CognitoUserSession>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     user.authenticateUser(
       new AuthenticationDetails({
         Username: email,
         Password: password,
       }),
       {
-        onSuccess: (result) => {
-          resolve(result);
+        onSuccess: () => {
+          resolve({ message: 'success' });
         },
         onFailure: (error) => {
           reject(error);
@@ -62,72 +90,16 @@ export const signIn = (email: string, password: string) => {
   });
 };
 
-export const setTokens = ({
-  idToken,
-  accessToken,
-  refreshToken,
-}: {
-  idToken: CognitoIdToken;
-  accessToken: CognitoAccessToken;
-  refreshToken: CognitoRefreshToken;
-}) => {
-  cookies().set('idToken', idToken.getJwtToken(), {
-    httpOnly: true,
-    secure: true,
-    expires: new Date((idToken.getExpiration() - 10 * 60) * 1000).getTime(),
-  });
-  cookies().set('accessToken', accessToken.getJwtToken(), {
-    httpOnly: true,
-    secure: true,
-    expires: new Date((accessToken.getExpiration() - 10 * 60) * 1000).getTime(),
-  });
-  cookies().set('refreshToken', refreshToken.getToken(), {
-    httpOnly: true,
-    secure: true,
-  });
-};
+export const getSession = () => {
+  const user = userPool.getCurrentUser();
 
-export const getTokens = async () => {
-  const idToken = cookies().get('idToken')?.value;
-  const accessToken = cookies().get('accessToken')?.value;
-  const refreshToken = cookies().get('refreshToken')?.value;
+  return new Promise<CognitoUserSession | null>((resolve, reject) => {
+    if (!user) return resolve(null);
 
-  if (!refreshToken) throw new Error('ログインしていません');
-
-  if (!idToken || !accessToken) {
-    return await refreshSession(refreshToken);
-  }
-
-  return { idToken, accessToken, refreshToken };
-};
-
-export const refreshSession = (refreshToken: string) => {
-  return new Promise<{
-    idToken: string;
-    accessToken: string;
-    refreshToken: string;
-  }>((resolve, reject) => {
-    const user = userPool.getCurrentUser();
-
-    if (!user) return reject(new Error('不正なユーザー'));
-
-    user.refreshSession(
-      new CognitoRefreshToken({ RefreshToken: refreshToken }),
-      (result: CognitoUserSession, err: Error) => {
-        if (err) return reject(err.message);
-
-        const idToken = result.getIdToken();
-        const accessToken = result.getAccessToken();
-        const refreshToken = result.getRefreshToken();
-
-        setTokens({ idToken, accessToken, refreshToken });
-        resolve({
-          idToken: idToken.getJwtToken(),
-          accessToken: accessToken.getJwtToken(),
-          refreshToken: refreshToken.getToken(),
-        });
-      },
-    );
+    user.getSession((error: Error | null, session: CognitoUserSession | null) => {
+      if (error) return reject(error);
+      resolve(session);
+    });
   });
 };
 
