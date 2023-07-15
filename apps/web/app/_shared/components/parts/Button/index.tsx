@@ -7,7 +7,7 @@ type Props<T extends ElementType | FC> = {
   className?: string;
   disabled?: boolean;
   fill?: boolean;
-} & ComponentPropsWithRef<T>;
+} & Omit<ComponentPropsWithRef<T>, 'as'>;
 
 export const Button = <T extends ElementType | FC = 'button'>({
   as: tag,
