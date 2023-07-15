@@ -90,8 +90,8 @@ export const signIn = async (email: string, password: string) => {
   });
 };
 
-export const getSession = () => {
-  const user = userPool.getCurrentUser();
+export const getSession = (_userPool = userPool) => {
+  const user = _userPool.getCurrentUser();
 
   return new Promise<CognitoUserSession | null>((resolve, reject) => {
     if (!user) return resolve(null);
