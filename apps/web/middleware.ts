@@ -5,7 +5,6 @@ import { getSession } from './app/_shared/libs/cognito';
 export const middleware = async (request: NextRequest) => {
   if (/_next\/static\//.test(request.nextUrl.pathname)) return;
 
-  /* Todo: 認証が必要なページが完成したらコメントアウト解除
   const _storage = {
     setItem(key: string, value: string) {
       request.cookies.set(key, value);
@@ -28,5 +27,4 @@ export const middleware = async (request: NextRequest) => {
   });
 
   await getSession(_userPool);
-  */
 };
