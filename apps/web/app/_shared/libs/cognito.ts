@@ -7,40 +7,22 @@ import {
   AuthenticationDetails,
   CognitoUserSession,
   CognitoUserAttribute,
-  ICognitoStorage,
 } from 'amazon-cognito-identity-js';
-import { cookies } from 'next/headers';
+import { Storage } from './storage';
 
-/**
- * バックエンドでcognito-identity-jsを使用する場合、
- * デフォルトでユーザーの認証情報をインメモリーのストレージに保存してしまうため、
- * ブラウザのCookieに保存できるようにストレージを自前で実装する
- * - <https://github.com/aws-amplify/amplify-js/blob/master/packages/amazon-cognito-identity-js/src/StorageHelper.js>
- * - <https://github.com/aws-amplify/amplify-js/blob/master/packages/amazon-cognito-identity-js/src/CognitoUser.js>
- */
-const userStorage: ICognitoStorage = {
-  setItem(key: string, value: string) {
-    cookies().set(key, value, {
-      httpOnly: true,
-      secure: true,
-    });
-  },
-  getItem(key: string) {
-    const data = cookies().get(key);
-
-    if (!data) return null;
-    return data.value;
-  },
-  removeItem(key: string) {
-    cookies().delete(key);
-  },
-  clear() {},
-};
+class DefaultStorage extends Storage {
+  /**
+   * getSession時にCognitoがsetItemでデータを更新しようとするが、
+   * Next13のcookies().set()は、server actionsかAPI Routesでしか使用できないため、
+   * デフォルトではsetItemをオーバーライドして無効化する
+   **/
+  setItem(key: string, value: string) {}
+}
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,
   ClientId: process.env.NEXT_PUBLIC_AWS_COGNITO_CLIENT_ID as string,
-  Storage: userStorage,
+  Storage: new DefaultStorage(),
 });
 
 export const signUp = (email: string, password: string) => {
@@ -69,7 +51,7 @@ export const signIn = async (email: string, password: string) => {
   const user = new CognitoUser({
     Username: email,
     Pool: userPool,
-    Storage: userStorage,
+    Storage: new Storage(),
   });
 
   return new Promise((resolve, reject) => {
