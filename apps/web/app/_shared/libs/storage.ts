@@ -12,7 +12,8 @@ export class Storage implements ICognitoStorage {
   setItem(key: string, value: string) {
     cookies().set(key, value, {
       httpOnly: true,
-      secure: true,
+      // ローカル開発の時はhttpでも使用できるようにする
+      secure: process.env.NODE_ENV !== 'development',
     });
   }
   getItem(key: string) {

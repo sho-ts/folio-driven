@@ -21,7 +21,7 @@ export const LoginForm = () => {
         try {
           await signIn(data.email, data.password);
           toast.success('ログインに成功しました！');
-          setAuthState({ isLogin: true });
+          setAuthState({ isLogin: true, isLoading: false });
           router.replace('/');
         } catch (e) {
           toast.error('メールアドレスかパスワードが\n間違っています。');
