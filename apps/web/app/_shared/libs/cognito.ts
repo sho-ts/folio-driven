@@ -8,7 +8,7 @@ import {
   CognitoUserSession,
   CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
-import { ReadonlyStorage } from './storage';
+import { ReadonlyStorage, ServerActionStorage } from './storage';
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,
@@ -42,7 +42,7 @@ export const signIn = async (email: string, password: string) => {
   const user = new CognitoUser({
     Username: email,
     Pool: userPool,
-    Storage: new Storage(),
+    Storage: new ServerActionStorage(),
   });
 
   return new Promise((resolve, reject) => {
