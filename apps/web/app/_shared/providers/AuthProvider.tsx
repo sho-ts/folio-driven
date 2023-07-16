@@ -12,7 +12,7 @@ type Props = {
 export const AuthProvider = ({ children, isLogin }: Props) => {
   const [, setAuthState] = useRecoilState(authState);
   useEffect(() => {
-    setAuthState({ isLogin });
+    setAuthState({ isLogin, isLoading: false });
   }, [isLogin, setAuthState]);
 
   return <Fragment>{children}</Fragment>;
