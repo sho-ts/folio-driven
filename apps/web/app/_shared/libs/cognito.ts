@@ -8,21 +8,12 @@ import {
   CognitoUserSession,
   CognitoUserAttribute,
 } from 'amazon-cognito-identity-js';
-import { Storage } from './storage';
-
-class DefaultStorage extends Storage {
-  /**
-   * getSession時にCognitoがsetItemでデータを更新しようとするが、
-   * Next13のcookies().set()は、server actionsかAPI Routesでしか使用できないため、
-   * デフォルトではsetItemをオーバーライドして無効化する
-   **/
-  setItem(key: string, value: string) {}
-}
+import { ReadonlyStorage } from './storage';
 
 const userPool = new CognitoUserPool({
   UserPoolId: process.env.NEXT_PUBLIC_AWS_COGNITO_USER_POOL_ID as string,
   ClientId: process.env.NEXT_PUBLIC_AWS_COGNITO_CLIENT_ID as string,
-  Storage: new DefaultStorage(),
+  Storage: new ReadonlyStorage(),
 });
 
 export const signUp = (email: string, password: string) => {
