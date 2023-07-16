@@ -1,10 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, ManyToOne, JoinColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, ManyToOne, JoinColumn, DeleteDateColumn, RelationId } from 'typeorm';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ProductImageId } from '@/domain/object/product/product-image-id';
 import { ProductImageOrder } from '@/domain/object/product/product-image-order';
 import { ProductImageUrl } from '@/domain/object/product/product-image-url';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { Product } from './product.entity';
+import { ProductId } from '@/domain/object/product/product-id.object';
 
 @Entity()
 @ObjectType()
@@ -29,6 +30,10 @@ export class ProductImage {
   @JoinColumn({ name: 'productId' })
   @Field(() => Product)
   product: Creator;
+
+  @RelationId((productImage: ProductImage) => productImage.product)
+  @Field(() => String)
+  productId: ProductId;
 
   @CreateDateColumn()
   @Field(() => Date)
