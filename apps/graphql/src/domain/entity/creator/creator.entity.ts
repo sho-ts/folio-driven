@@ -6,6 +6,8 @@ import { Product } from '@/domain/entity/product/product.entity';
 import { DisplayName } from '@/domain/object/creator/display-name.object';
 import { Products } from '@/domain/entity/aggregation/products.entity';
 import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
+import { ProductImage } from '@/domain/entity/product/product-image.entity';
+import { ProductImages } from '@/domain/entity/aggregation/product-images.entity';
 
 @Entity()
 @ObjectType()
@@ -29,6 +31,11 @@ export class Creator {
   @JoinColumn()
   @Field(() => Products, { nullable: true })
   products: Product[];
+
+  @OneToMany(() => ProductImage, (productImage) => productImage.creator)
+  @JoinColumn()
+  @Field(() => ProductImages, { nullable: true })
+  productImages: ProductImage[];
 
   @CreateDateColumn()
   @Field(() => Date)

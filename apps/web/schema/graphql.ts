@@ -43,6 +43,7 @@ export type Creator = {
   deletedAt: Scalars['DateTime']['output'];
   displayName: Scalars['String']['output'];
   nickName?: Maybe<Scalars['String']['output']>;
+  productImages?: Maybe<ProductImages>;
   products?: Maybe<Products>;
   updatedAt: Scalars['DateTime']['output'];
 };
@@ -65,6 +66,7 @@ export type Product = {
   description: Scalars['String']['output'];
   overview: Scalars['String']['output'];
   productId: Scalars['String']['output'];
+  productImages?: Maybe<ProductImages>;
   productStatus: Scalars['Int']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
@@ -72,6 +74,23 @@ export type Product = {
 
 export type ProductHashtag = {
   hashtagName: Scalars['String']['input'];
+};
+
+export type ProductImage = {
+  __typename?: 'ProductImage';
+  createdAt: Scalars['DateTime']['output'];
+  creator: Creator;
+  deletedAt: Scalars['DateTime']['output'];
+  order: Scalars['Int']['output'];
+  product: Product;
+  updatedAt: Scalars['DateTime']['output'];
+  url: Scalars['String']['output'];
+};
+
+export type ProductImages = {
+  __typename?: 'ProductImages';
+  items?: Maybe<Array<ProductImage>>;
+  total: Scalars['Int']['output'];
 };
 
 export type ProductWebsite = {

@@ -21,6 +21,7 @@ type Creator {
   deletedAt: DateTime!
   displayName: String!
   nickName: String
+  productImages: ProductImages
   products: Products
   updatedAt: DateTime!
 }
@@ -42,6 +43,7 @@ type Product {
   description: String!
   overview: String!
   productId: String!
+  productImages: ProductImages
   productStatus: Int!
   title: String!
   updatedAt: DateTime!
@@ -49,6 +51,21 @@ type Product {
 
 input ProductHashtag {
   hashtagName: String!
+}
+
+type ProductImage {
+  createdAt: DateTime!
+  creator: Creator!
+  deletedAt: DateTime!
+  order: Int!
+  product: Product!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type ProductImages {
+  items: [ProductImage!]
+  total: Int!
 }
 
 input ProductWebsite {

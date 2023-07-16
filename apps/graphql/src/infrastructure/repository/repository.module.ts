@@ -4,8 +4,9 @@ import { Creator } from '@/domain/entity/creator/creator.entity';
 import { Product } from '@/domain/entity/product/product.entity';
 import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
 import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
+import { ProductImage } from '@/domain/entity/product/product-image.entity';
 
-const TypeOrmFeature = TypeOrmModule.forFeature([Creator, Product, ProductWebsite, ProductHashtag]);
+const TypeOrmFeature = TypeOrmModule.forFeature([Creator, Product, ProductWebsite, ProductHashtag, ProductImage]);
 
 @Module({
   imports: [TypeOrmFeature],

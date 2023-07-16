@@ -10,6 +10,7 @@ import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
 import { Company } from '@/domain/entity/company/company.entity';
 import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
 import { join } from 'path';
+import { ProductImage } from '@/domain/entity/product/product-image.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { join } from 'path';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [Product, ProductWebsite, ProductHashtag, Creator, Company],
+      entities: [Product, ProductWebsite, ProductHashtag, ProductImage, Creator, Company],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
