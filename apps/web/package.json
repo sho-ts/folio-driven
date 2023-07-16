@@ -11,7 +11,7 @@
     "codegen": "graphql-codegen --config ./schema/codegen.ts --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.0-alpha.15",
+    "@apollo/client": "3.8.0-rc.0",
     "@apollo/experimental-nextjs-app-support": "^0.2.1",
     "@hookform/resolvers": "^3.1.1",
     "@types/node": "20.3.1",
