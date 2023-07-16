@@ -1,0 +1,5 @@
+.item {
+    @media screen and (min-width: 1280px) {
+        width: calc(100% / 2 - 1rem);
+    }
+}

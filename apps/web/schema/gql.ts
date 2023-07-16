@@ -1,6 +1,6 @@
 /* eslint-disable */
-import * as types from "./graphql";
-import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+import * as types from './graphql';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,8 +13,10 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  "\n  query SearchProducts {\n    products {\n      items {\n        title\n        description\n        productId\n        createdAt\n        updatedAt\n      }\n    }\n  }\n":
-    types.SearchProductsDocument,
+  '\n  query Home {\n    products {\n      ...ProductCardsFragment\n    }\n  }\n  \n':
+    types.HomeDocument,
+  '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n':
+    types.ProductCardsFragmentFragmentDoc,
 };
 
 /**
@@ -35,8 +37,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "\n  query SearchProducts {\n    products {\n      items {\n        title\n        description\n        productId\n        createdAt\n        updatedAt\n      }\n    }\n  }\n"
-): (typeof documents)["\n  query SearchProducts {\n    products {\n      items {\n        title\n        description\n        productId\n        createdAt\n        updatedAt\n      }\n    }\n  }\n"];
+  source: '\n  query Home {\n    products {\n      ...ProductCardsFragment\n    }\n  }\n  \n',
+): (typeof documents)['\n  query Home {\n    products {\n      ...ProductCardsFragment\n    }\n  }\n  \n'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n',
+): (typeof documents)['\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

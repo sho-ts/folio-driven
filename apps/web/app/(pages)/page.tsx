@@ -1,12 +1,34 @@
-import Link from "next/link";
+import {
+  ProductCards,
+  ProductCardsFragment,
+} from '../_features/product/components/blocks/ProductCards';
+import { gql } from '@apollo/client';
+import { getClient } from '../_shared/libs/apollo';
+import { Fragment } from 'react';
+import { Header, Main } from '../_shared/components/layouts';
 
-export default async function Home() {
+const query = gql`
+  query Home {
+    products {
+      ...ProductCardsFragment
+    }
+  }
+  ${ProductCardsFragment}
+`;
+
+const Home = async () => {
+  const { data } = await getClient().query({
+    query,
+  });
+
   return (
-    <main>
-      <div>
-        <p>Hello World</p>
-        <Link href='/login'>login</Link>
-      </div>
-    </main>
+    <Fragment>
+      <Header title='ホーム' />
+      <Main>
+        <ProductCards products={data.products} />
+      </Main>
+    </Fragment>
   );
-}
+};
+
+export default Home;
