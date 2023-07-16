@@ -17,7 +17,7 @@ import { CreateProductUseCase } from '@/application/usecase/product/create-produ
 @Resolver(() => Product)
 export class ProductResolver {
   constructor(
-    private findProductuseCase: FindProductUseCase,
+    private findProductUseCase: FindProductUseCase,
     private searchProductsUseCase: SearchProductsUseCase,
     private batchFindCreatorUseCase: BatchFindCreatorUseCase,
     private createProductUseCase: CreateProductUseCase,
@@ -26,7 +26,7 @@ export class ProductResolver {
   @Query(() => Product)
   async product(@Args('productId') productId: ProductId) {
     const input = new FindProductInput({ productId });
-    const output = await this.findProductuseCase.handle(input);
+    const output = await this.findProductUseCase.handle(input);
 
     return output.product;
   }
