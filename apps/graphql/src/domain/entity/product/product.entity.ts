@@ -9,7 +9,7 @@ import { CreatorId } from '@/domain/object/creator/creator-id.object';
 import { ProductImage } from './product-image.entity';
 import { ProductImages } from '../aggregation/product-images.entity';
 
-@Entity()
+@Entity({ synchronize: false })
 @ObjectType()
 export class Product {
   @PrimaryGeneratedColumn('uuid')

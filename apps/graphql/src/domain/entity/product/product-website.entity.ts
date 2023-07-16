@@ -5,7 +5,7 @@ import { ProductWebsiteUrl } from '@/domain/object/product/product-website-url.o
 import { ProductWebsiteType } from '@/domain/object/product/product-website-type.object';
 import { Field, InputType, Int } from '@nestjs/graphql';
 
-@Entity()
+@Entity({ synchronize: false })
 @InputType()
 export class ProductWebsite {
   @PrimaryGeneratedColumn('uuid')

@@ -5,7 +5,7 @@ import { ProductHashtagName } from '@/domain/object/product/product-hashtag-name
 import { Field, InputType } from '@nestjs/graphql';
 import { MaxLength } from 'class-validator';
 
-@Entity()
+@Entity({ synchronize: false })
 @InputType()
 export class ProductHashtag {
   @PrimaryGeneratedColumn('uuid')

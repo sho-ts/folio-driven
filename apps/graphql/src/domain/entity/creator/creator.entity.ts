@@ -9,7 +9,7 @@ import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
 import { ProductImage } from '@/domain/entity/product/product-image.entity';
 import { ProductImages } from '@/domain/entity/aggregation/product-images.entity';
 
-@Entity()
+@Entity({ synchronize: false })
 @ObjectType()
 export class Creator {
   @PrimaryGeneratedColumn('uuid')

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { CompanyId } from '@/domain/object/company/company-id.object';
 
-@Entity()
+@Entity({ synchronize: false })
 export class Company {
   @PrimaryGeneratedColumn('uuid')
   companyId: CompanyId;
