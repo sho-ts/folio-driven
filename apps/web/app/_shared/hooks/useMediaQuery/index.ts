@@ -12,7 +12,7 @@ export const useMediaQuery = ({ query }: UseMediaQueryInput) => {
   }, [query]);
 
   useEffect(() => {
-    setIsMatches(true);
+    handleMediaQuery();
     window.addEventListener('resize', handleMediaQuery);
 
     return () => {
