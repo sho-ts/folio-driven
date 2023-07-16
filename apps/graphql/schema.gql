@@ -59,6 +59,7 @@ type ProductImage {
   deletedAt: DateTime!
   order: Int!
   product: Product!
+  productId: String!
   updatedAt: DateTime!
   url: String!
 }

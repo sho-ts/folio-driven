@@ -11,5 +11,5 @@ export class ProductImages {
   total = 0;
 
   // 検索用
-  productIds?: ProductId[];
+  productId: ProductId;
 }

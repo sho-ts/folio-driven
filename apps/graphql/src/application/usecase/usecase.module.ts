@@ -6,10 +6,11 @@ import { ProductRepository } from '@/infrastructure/repository/product.repositor
 import { DataLoaderModule } from '@/infrastructure/dataloader/dataloader.module';
 import { ProductWebsiteRepository } from '@/infrastructure/repository/product-website.repository';
 import { ProductHashtagRepository } from '@/infrastructure/repository/product-hashtag.repository';
+import { ProductImageRepository } from '@/infrastructure/repository/product-image.repository';
 
 @Module({
   imports: [RepositoryModule, DataLoaderModule],
-  providers: [CreatorRepository, CreatorDataLoader, ProductRepository, ProductWebsiteRepository, ProductHashtagRepository],
-  exports: [CreatorRepository, CreatorDataLoader, ProductRepository, ProductWebsiteRepository, ProductHashtagRepository],
+  providers: [CreatorRepository, CreatorDataLoader, ProductRepository, ProductWebsiteRepository, ProductHashtagRepository, ProductImageRepository],
+  exports: [CreatorRepository, CreatorDataLoader, ProductRepository, ProductWebsiteRepository, ProductHashtagRepository, ProductImageRepository],
 })
 export class UseCaseModule {}

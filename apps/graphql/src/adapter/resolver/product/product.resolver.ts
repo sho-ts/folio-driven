@@ -13,6 +13,9 @@ import { CreateProductInput } from '@/application/input/product/create-product.i
 import { Guard } from '@/application/middleware/auth';
 import { CognitoUser } from '@/domain/entity/cognito/cognito-user.entity';
 import { CreateProductUseCase } from '@/application/usecase/product/create-product.usecase';
+import { ProductImages } from '@/domain/entity/aggregation/product-images.entity';
+import { SearchProductImagesInput } from '@/application/input/product/product-image/search-product-images.input';
+import { SearchProductImagesUseCase } from '@/application/usecase/product/product-image/search-product-images.usecase';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -21,6 +24,7 @@ export class ProductResolver {
     private searchProductsUseCase: SearchProductsUseCase,
     private batchFindCreatorUseCase: BatchFindCreatorUseCase,
     private createProductUseCase: CreateProductUseCase,
+    private searchProductImagesUseCase: SearchProductImagesUseCase,
   ) {}
 
   @Query(() => Product)
@@ -52,5 +56,13 @@ export class ProductResolver {
     const output = await this.batchFindCreatorUseCase.handle(input);
 
     return output.creator;
+  }
+
+  @ResolveField(() => ProductImages)
+  async productImages(@Parent() product: Product) {
+    const input = new SearchProductImagesInput({ productId: product.productId });
+    const output = await this.searchProductImagesUseCase.handle(input);
+
+    return output.productImages;
   }
 }

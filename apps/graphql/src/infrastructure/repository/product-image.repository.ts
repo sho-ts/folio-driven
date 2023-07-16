@@ -14,9 +14,9 @@ export class ProductImageRepository {
   async search(productImages: ProductImages) {
     const query = this.repository.createQueryBuilder('productImage').select('productImage');
 
-    if (productImages.productIds) {
-      query.where('productImage.productId in (:...productIds)', {
-        productIds: productImages.productIds,
+    if (productImages.productId) {
+      query.where('productImage.productId = :productId', {
+        productId: productImages.productId,
       });
     }
 
