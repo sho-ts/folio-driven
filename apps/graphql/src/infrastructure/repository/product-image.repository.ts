@@ -33,7 +33,7 @@ export class ProductImageRepository {
     return manager?.getRepository(ProductImage)?.save(productImage) ?? this.repository.save(productImage);
   }
 
-  async saveAll(productImage: ProductImage[], manager?: EntityManager) {
-    return manager?.getRepository(ProductImage)?.save(productImage) ?? this.repository.save(productImage);
+  async saveAll(productImages: ProductImages, manager?: EntityManager) {
+    return manager?.getRepository(ProductImage)?.save(productImages.items) ?? this.repository.save(productImages.items);
   }
 }
