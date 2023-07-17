@@ -32,4 +32,8 @@ export class ProductImageRepository {
   async save(productImage: ProductImage, manager?: EntityManager) {
     return manager?.getRepository(ProductImage)?.save(productImage) ?? this.repository.save(productImage);
   }
+
+  async saveAll(productImage: ProductImage[], manager?: EntityManager) {
+    return manager?.getRepository(ProductImage)?.save(productImage) ?? this.repository.save(productImage);
+  }
 }
