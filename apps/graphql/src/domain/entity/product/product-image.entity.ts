@@ -2,11 +2,11 @@ import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Col
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ProductImageId } from '@/domain/object/product/product-image-id';
 import { ProductImageOrder } from '@/domain/object/product/product-image-order';
-import { ProductImageUrl } from '@/domain/object/product/product-image-url';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { Product } from './product.entity';
 import { ProductId } from '@/domain/object/product/product-id.object';
 import { CreatorId } from '@/domain/object/creator/creator-id.object';
+import { MediaUrl } from '@/domain/object/media/media-url.object';
 
 @Entity({ synchronize: false })
 @ObjectType()
@@ -16,7 +16,7 @@ export class ProductImage {
 
   @Column({ type: 'text' })
   @Field(() => String)
-  url: ProductImageUrl;
+  url: MediaUrl;
 
   @Column()
   @Field(() => Int)

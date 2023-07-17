@@ -3,10 +3,10 @@ import { ArrayMaxSize, IsNotEmpty, IsOptional, MaxLength } from 'class-validator
 import { Type } from 'class-transformer';
 import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
 import { ProductImageOrder } from '@/domain/object/product/product-image-order';
-import { ProductImageUrl } from '@/domain/object/product/product-image-url';
 import { ProductWebsiteUrl } from '@/domain/object/product/product-website-url.object';
 import { ProductWebsiteType } from '@/domain/object/product/product-website-type.object';
 import { ProductHashtagName } from '@/domain/object/product/product-hashtag-name.object';
+import { MediaUrl } from '@/domain/object/media/media-url.object';
 
 @InputType()
 export class CreateProductInput {
@@ -50,7 +50,7 @@ export class CreateProductInput {
 class CreateProductInputImage {
   @Field(() => String)
   @IsNotEmpty()
-  url: ProductImageUrl;
+  url: MediaUrl;
 
   @Field(() => Int)
   @IsNotEmpty()
