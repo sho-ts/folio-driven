@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
   '\n  query Home {\n    products {\n      ...ProductCardsFragment\n    }\n  }\n  \n':
     types.HomeDocument,
-  '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n':
+  '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n      productImages {\n        items {\n          url\n        }\n      }\n    }\n  }\n':
     types.ProductCardsFragmentFragmentDoc,
 };
 
@@ -43,8 +43,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n',
-): (typeof documents)['\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n    }\n  }\n'];
+  source: '\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n      productImages {\n        items {\n          url\n        }\n      }\n    }\n  }\n',
+): (typeof documents)['\n  fragment ProductCardsFragment on Products {\n    total\n    items {\n      productId\n      title\n      productImages {\n        items {\n          url\n        }\n      }\n    }\n  }\n'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -9,6 +9,11 @@ export const ProductCardsFragment = gql`
     items {
       productId
       title
+      productImages {
+        items {
+          url
+        }
+      }
     }
   }
 `;

@@ -28,12 +28,31 @@ export type CognitoUser = {
   email: Scalars['String']['output'];
 };
 
+export type CreateMediaInput = {
+  object: Scalars['String']['input'];
+};
+
 export type CreateProductInput = {
   description?: InputMaybe<Scalars['String']['input']>;
-  hashtags?: InputMaybe<Array<ProductHashtag>>;
+  hashtags?: InputMaybe<Array<CreateProductInputHashtag>>;
+  images?: InputMaybe<Array<CreateProductInputImage>>;
   overview?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
-  websites?: InputMaybe<Array<ProductWebsite>>;
+  websites?: InputMaybe<Array<CreateProductInputWebsite>>;
+};
+
+export type CreateProductInputHashtag = {
+  hashtagName: Scalars['String']['input'];
+};
+
+export type CreateProductInputImage = {
+  order: Scalars['Int']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type CreateProductInputWebsite = {
+  url: Scalars['String']['input'];
+  websiteType: Scalars['Int']['input'];
 };
 
 export type Creator = {
@@ -43,14 +62,25 @@ export type Creator = {
   deletedAt: Scalars['DateTime']['output'];
   displayName: Scalars['String']['output'];
   nickName?: Maybe<Scalars['String']['output']>;
-  productImages?: Maybe<ProductImages>;
   products?: Maybe<Products>;
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type Media = {
+  __typename?: 'Media';
+  mediaId: Scalars['String']['output'];
+  mediaType: Scalars['Int']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createMedia: Media;
   createProduct: Product;
+};
+
+export type MutationCreateMediaArgs = {
+  input: CreateMediaInput;
 };
 
 export type MutationCreateProductArgs = {
@@ -72,18 +102,9 @@ export type Product = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type ProductHashtag = {
-  hashtagName: Scalars['String']['input'];
-};
-
 export type ProductImage = {
   __typename?: 'ProductImage';
-  createdAt: Scalars['DateTime']['output'];
-  creator: Creator;
-  deletedAt: Scalars['DateTime']['output'];
   order: Scalars['Int']['output'];
-  product: Product;
-  updatedAt: Scalars['DateTime']['output'];
   url: Scalars['String']['output'];
 };
 
@@ -91,11 +112,6 @@ export type ProductImages = {
   __typename?: 'ProductImages';
   items?: Maybe<Array<ProductImage>>;
   total: Scalars['Int']['output'];
-};
-
-export type ProductWebsite = {
-  url: Scalars['String']['input'];
-  websiteType: Scalars['Int']['input'];
 };
 
 export type Products = {
@@ -144,7 +160,15 @@ export type HomeQuery = {
 export type ProductCardsFragmentFragment = {
   __typename?: 'Products';
   total: number;
-  items?: Array<{ __typename?: 'Product'; productId: string; title: string }> | null;
+  items?: Array<{
+    __typename?: 'Product';
+    productId: string;
+    title: string;
+    productImages?: {
+      __typename?: 'ProductImages';
+      items?: Array<{ __typename?: 'ProductImage'; url: string }> | null;
+    } | null;
+  }> | null;
 } & { ' $fragmentName'?: 'ProductCardsFragmentFragment' };
 
 export const ProductCardsFragmentFragmentDoc = {
@@ -166,6 +190,23 @@ export const ProductCardsFragmentFragmentDoc = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'productId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'productImages' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'url' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -213,6 +254,23 @@ export const HomeDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'productId' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'title' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'productImages' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'items' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [{ kind: 'Field', name: { kind: 'Name', value: 'url' } }],
+                        },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
