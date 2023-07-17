@@ -1,6 +1,6 @@
 import { ICognitoStorage } from 'amazon-cognito-identity-js';
 import { cookies } from 'next/headers';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 export class ServerActionStorage implements ICognitoStorage {
   setItem(key: string, value: string) {
@@ -36,18 +36,25 @@ export class ReadonlyStorage extends ServerActionStorage implements ICognitoStor
 }
 
 export class MiddlewareStorage implements ICognitoStorage {
-  constructor(private readonly request: NextRequest) {}
+  constructor(private readonly request: NextRequest, private readonly response: NextResponse) {}
 
   setItem(key: string, value: string) {
-    this.request.cookies.set(key, value);
+    this.response.cookies.set(key, value, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+    });
   }
   getItem(key: string) {
     return this.request.cookies.get(key)?.value ?? null;
   }
   removeItem(key: string) {
-    this.request.cookies.delete(key);
+    this.response.cookies.set(key, '', {
+      expires: new Date(Date.now()),
+    });
   }
   clear() {
-    this.request.cookies.clear();
+    this.response.cookies.getAll().forEach((cookie) => {
+      this.removeItem(cookie.name);
+    });
   }
 }
