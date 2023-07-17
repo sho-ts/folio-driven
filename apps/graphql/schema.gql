@@ -7,6 +7,10 @@ type CognitoUser {
   email: String!
 }
 
+input CreateMediaInput {
+  object: String!
+}
+
 input CreateProductInput {
   description: String
   hashtags: [ProductHashtag!] = []
@@ -31,7 +35,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Media {
+  mediaType: Int!
+  url: String!
+}
+
 type Mutation {
+  createMedia(input: CreateMediaInput!): Media!
   createProduct(input: CreateProductInput!): Product!
 }
 

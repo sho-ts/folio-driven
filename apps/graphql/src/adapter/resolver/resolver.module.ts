@@ -9,9 +9,23 @@ import { FindProductUseCase } from '@/application/usecase/product/find-prodcut.u
 import { SelfResolver } from './self/self.resolver';
 import { CreateProductUseCase } from '@/application/usecase/product/create-product.usecase';
 import { SearchProductImagesUseCase } from '@/application/usecase/product/product-image/search-product-images.usecase';
+import { CreateMediaUseCase } from '@/application/usecase/media/create-media.usecase';
+import { MediaResolver } from '@/adapter/resolver/media/media.resolver';
 
 @Module({
-  providers: [SelfResolver, CreatorResolver, ProductResolver, FindCreatorUseCase, BatchFindCreatorUseCase, FindProductUseCase, SearchProductsUseCase, CreateProductUseCase, SearchProductImagesUseCase],
+  providers: [
+    SelfResolver,
+    CreatorResolver,
+    MediaResolver,
+    ProductResolver,
+    FindCreatorUseCase,
+    BatchFindCreatorUseCase,
+    FindProductUseCase,
+    SearchProductsUseCase,
+    CreateProductUseCase,
+    SearchProductImagesUseCase,
+    CreateMediaUseCase,
+  ],
   imports: [UseCaseModule],
 })
 export class ResolverModule {}
