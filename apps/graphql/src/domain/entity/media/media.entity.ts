@@ -9,6 +9,7 @@ import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
 @ObjectType()
 export class Media {
   @PrimaryGeneratedColumn('uuid')
+  @Field(() => String)
   mediaId: MediaId;
 
   @Column()
