@@ -1,9 +1,12 @@
-import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 import { ArrayMaxSize, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
 import { CognitoId } from '@/domain/object/cognito/cognito-id.object';
+import { ProductImageOrder } from '@/domain/object/product/product-image-order';
+import { ProductImageUrl } from '@/domain/object/product/product-image-url';
+import { ProductWebsiteUrl } from '@/domain/object/product/product-website-url.object';
+import { ProductWebsiteType } from '@/domain/object/product/product-website-type.object';
+import { ProductHashtagName } from '@/domain/object/product/product-hashtag-name.object';
 
 @InputType()
 export class CreateProductInput {
@@ -22,17 +25,50 @@ export class CreateProductInput {
   @IsOptional()
   description: string;
 
-  @Field(() => [ProductHashtag], { nullable: true, defaultValue: [] })
+  @Field(() => [CreateProductInputHashtag], { nullable: true, defaultValue: [] })
   @IsOptional()
   @ArrayMaxSize(20)
-  @Type(() => ProductHashtag)
-  hashtags: ProductHashtag[];
+  @Type(() => CreateProductInputHashtag)
+  hashtags: CreateProductInputHashtag[];
 
-  @Field(() => [ProductWebsite], { nullable: true, defaultValue: [] })
+  @Field(() => [CreateProductInputWebsite], { nullable: true, defaultValue: [] })
   @ArrayMaxSize(20)
   @IsOptional()
-  @Type(() => ProductWebsite)
-  websites: ProductWebsite[];
+  @Type(() => CreateProductInputWebsite)
+  websites: CreateProductInputWebsite[];
+
+  @Field(() => [CreateProductInputImage], { nullable: true, defaultValue: [] })
+  @ArrayMaxSize(20)
+  @IsOptional()
+  @Type(() => CreateProductInputImage)
+  images: CreateProductInputImage[];
 
   cognitoId?: CognitoId;
+}
+
+@InputType()
+class CreateProductInputImage {
+  @Field(() => String)
+  @IsNotEmpty()
+  url: ProductImageUrl;
+
+  @Field(() => Int)
+  @IsNotEmpty()
+  order: ProductImageOrder;
+}
+
+@InputType()
+class CreateProductInputWebsite {
+  @Field(() => String)
+  url: ProductWebsiteUrl;
+
+  @Field(() => Int)
+  websiteType: ProductWebsiteType;
+}
+
+@InputType()
+class CreateProductInputHashtag {
+  @Field(() => String)
+  @MaxLength(20)
+  hashtagName: ProductHashtagName;
 }

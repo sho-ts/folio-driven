@@ -1,6 +1,8 @@
 import { CreateProductInput } from '@/application/input/product/create-product.input';
 import { CreateProductOutput } from '@/application/output/product/create-product.output';
 import { Creator } from '@/domain/entity/creator/creator.entity';
+import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
+import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
 import { Product } from '@/domain/entity/product/product.entity';
 import { PRODUCT_STATUS } from '@/domain/object/product/product-status.object';
 import { CreatorRepository } from '@/infrastructure/repository/creator.repository';
@@ -31,24 +33,34 @@ export class CreateProductUseCase {
 
         if (!findCreatorResult) throw new Error(`Creatorが見つかりません。 cognitoId: ${creator.cognitoId}`);
 
-        // Insert Prodcut
+        // Insert Product
+        const hashtags = input.hashtags.map(({ hashtagName }) => {
+          const hashtag = new ProductHashtag();
+          hashtag.hashtagName = hashtagName;
+          return hashtag;
+        });
+        const websites = input.websites.map(({ url, websiteType }) => {
+          const website = new ProductWebsite();
+          website.url = url;
+          website.websiteType = websiteType;
+          return website;
+        });
         const product = new Product();
         product.title = input.title;
         product.overview = input.overview;
         product.description = input.description;
-        product.hashtags = input.hashtags;
-        product.creator = findCreatorResult;
+        product.hashtags = hashtags;
         product.productStatus = PRODUCT_STATUS.PUBLIC;
         const saveProductResult = await this.productRepository.save(product, manager);
 
         // Insert ProductWebsite & ProductHashtag
         const [saveProductWebsitesResult, saveProductHashtagsResult] = await Promise.all([
           this.productWebsiteRepository.saveAll(
-            input.websites.map((website) => ({ ...website, product: saveProductResult })),
+            websites.map((website) => ({ ...website, product: saveProductResult })),
             manager,
           ),
           this.productHashtagRepository.saveAll(
-            input.hashtags.map((hashtag) => ({ ...hashtag, product: saveProductResult })),
+            hashtags.map((hashtag) => ({ ...hashtag, product: saveProductResult })),
             manager,
           ),
         ]);

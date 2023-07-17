@@ -24,31 +24,24 @@ export class ProductImage {
 
   @ManyToOne(() => Creator, (creator) => creator.products)
   @JoinColumn({ name: 'creatorId' })
-  @Field(() => Creator)
   creator: Creator;
 
   @RelationId((productImage: ProductImage) => productImage.creator)
-  @Field(() => String)
   creatorId: CreatorId;
 
   @ManyToOne(() => Product, (product) => product.productImages)
   @JoinColumn({ name: 'productId' })
-  @Field(() => Product)
   product: Creator;
 
   @RelationId((productImage: ProductImage) => productImage.product)
-  @Field(() => String)
   productId: ProductId;
 
   @CreateDateColumn()
-  @Field(() => Date)
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Field(() => Date)
   updatedAt: Date;
 
   @DeleteDateColumn()
-  @Field(() => Date)
   deletedAt: Date;
 }

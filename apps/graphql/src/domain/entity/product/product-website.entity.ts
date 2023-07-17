@@ -3,10 +3,10 @@ import { Product } from './product.entity';
 import { ProductWebsiteId } from '@/domain/object/product/product-website-id.object';
 import { ProductWebsiteUrl } from '@/domain/object/product/product-website-url.object';
 import { ProductWebsiteType } from '@/domain/object/product/product-website-type.object';
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @Entity({ synchronize: false })
-@InputType()
+@ObjectType()
 export class ProductWebsite {
   @PrimaryGeneratedColumn('uuid')
   productWebsiteId: ProductWebsiteId;

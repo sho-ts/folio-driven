@@ -13,10 +13,25 @@ input CreateMediaInput {
 
 input CreateProductInput {
   description: String
-  hashtags: [ProductHashtag!] = []
+  hashtags: [CreateProductInputHashtag!] = []
+  images: [CreateProductInputImage!] = []
   overview: String
   title: String!
-  websites: [ProductWebsite!] = []
+  websites: [CreateProductInputWebsite!] = []
+}
+
+input CreateProductInputHashtag {
+  hashtagName: String!
+}
+
+input CreateProductInputImage {
+  order: Int!
+  url: String!
+}
+
+input CreateProductInputWebsite {
+  url: String!
+  websiteType: Int!
 }
 
 type Creator {
@@ -59,30 +74,14 @@ type Product {
   updatedAt: DateTime!
 }
 
-input ProductHashtag {
-  hashtagName: String!
-}
-
 type ProductImage {
-  createdAt: DateTime!
-  creator: Creator!
-  creatorId: String!
-  deletedAt: DateTime!
   order: Int!
-  product: Product!
-  productId: String!
-  updatedAt: DateTime!
   url: String!
 }
 
 type ProductImages {
   items: [ProductImage!]
   total: Int!
-}
-
-input ProductWebsite {
-  url: String!
-  websiteType: Int!
 }
 
 type Products {
