@@ -7,6 +7,13 @@ import { ProductWebsiteUrl } from '@/domain/object/product/product-website-url.o
 import { ProductWebsiteType } from '@/domain/object/product/product-website-type.object';
 import { ProductHashtagName } from '@/domain/object/product/product-hashtag-name.object';
 import { MediaUrl } from '@/domain/object/media/media-url.object';
+import { Media } from '@/domain/entity/media/media.entity';
+import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
+import { Product } from '@/domain/entity/product/product.entity';
+import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
+import { ProductImage } from '@/domain/entity/product/product-image.entity';
+import { Creator } from '@/domain/entity/creator/creator.entity';
+import { PRODUCT_STATUS } from '@/domain/object/product/product-status.object';
 
 @InputType()
 export class CreateProductInput {
@@ -44,6 +51,59 @@ export class CreateProductInput {
   images: CreateProductInputImage[];
 
   cognitoId?: CognitoId;
+
+  getMedias() {
+    return this.images.map(({ url }) => {
+      const media = new Media();
+      media.cognitoId = this.cognitoId;
+      media.url = url;
+      return media;
+    });
+  }
+
+  getWebsites(product?: Product) {
+    return this.websites.map(({ url, websiteType }) => {
+      const website = new ProductWebsite();
+      website.url = url;
+      website.websiteType = websiteType;
+      website.product = product;
+      return website;
+    });
+  }
+
+  getHashtags(product?: Product) {
+    return this.hashtags.map(({ hashtagName }) => {
+      const hashtag = new ProductHashtag();
+      hashtag.hashtagName = hashtagName;
+      hashtag.product = product;
+      return hashtag;
+    });
+  }
+
+  getProductImages(product?: Product) {
+    return this.images.map(({ url, order }) => {
+      const productImage = new ProductImage();
+      productImage.url = url;
+      productImage.product = product;
+      productImage.order = order;
+      return productImage;
+    });
+  }
+
+  getCreator() {
+    const creator = new Creator();
+    creator.cognitoId = this.cognitoId;
+    return creator;
+  }
+
+  getProduct() {
+    const product = new Product();
+    product.title = this.title;
+    product.overview = this.overview;
+    product.description = this.description;
+    product.productStatus = PRODUCT_STATUS.PUBLIC;
+    return product;
+  }
 }
 
 @InputType()
