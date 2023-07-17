@@ -24,7 +24,7 @@ export class CreateProductUseCase {
 
   async handle(input: CreateProductInput) {
     try {
-      const result = await this.entityManager.transaction(async (maneger) => {
+      const result = await this.entityManager.transaction(async (manager) => {
         const creator = new Creator();
         creator.cognitoId = input.cognitoId;
         const findCreatorResult = await this.creatorRepository.find(creator);
@@ -39,17 +39,17 @@ export class CreateProductUseCase {
         product.hashtags = input.hashtags;
         product.creator = findCreatorResult;
         product.productStatus = PRODUCT_STATUS.PUBLIC;
-        const saveProductResult = await this.productRepository.save(product, maneger);
+        const saveProductResult = await this.productRepository.save(product, manager);
 
         // Insert ProductWebsite & ProductHashtag
         const [saveProductWebsitesResult, saveProductHashtagsResult] = await Promise.all([
           this.productWebsiteRepository.saveAll(
             input.websites.map((website) => ({ ...website, product: saveProductResult })),
-            maneger,
+            manager,
           ),
           this.productHashtagRepository.saveAll(
             input.hashtags.map((hashtag) => ({ ...hashtag, product: saveProductResult })),
-            maneger,
+            manager,
           ),
         ]);
         saveProductResult.websites = saveProductWebsitesResult;

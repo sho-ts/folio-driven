@@ -43,7 +43,7 @@ export class ProductRepository {
     return result;
   }
 
-  async save(product: Product, maneger?: EntityManager) {
-    return maneger?.getRepository(Product)?.save(product) ?? this.repository.save(product);
+  async save(product: Product, manager?: EntityManager) {
+    return manager?.getRepository(Product)?.save(product) ?? this.repository.save(product);
   }
 }
