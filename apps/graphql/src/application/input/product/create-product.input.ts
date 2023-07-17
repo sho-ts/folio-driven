@@ -22,13 +22,13 @@ export class CreateProductInput {
   @IsOptional()
   description: string;
 
-  @Field(() => [ProductHashtag], { nullable: true })
+  @Field(() => [ProductHashtag], { nullable: true, defaultValue: [] })
   @IsOptional()
   @ArrayMaxSize(20)
   @Type(() => ProductHashtag)
   hashtags: ProductHashtag[];
 
-  @Field(() => [ProductWebsite], { nullable: true })
+  @Field(() => [ProductWebsite], { nullable: true, defaultValue: [] })
   @ArrayMaxSize(20)
   @IsOptional()
   @Type(() => ProductWebsite)
