@@ -2,7 +2,7 @@ import { ProductImages } from '@/domain/entity/aggregation/product-images.entity
 import { ProductImage } from '@/domain/entity/product/product-image.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductImageRepository {
@@ -27,5 +27,9 @@ export class ProductImageRepository {
     result.items = items;
 
     return result;
+  }
+
+  async save(productImage: ProductImage, manager?: EntityManager) {
+    return manager?.getRepository(ProductImage)?.save(productImage) ?? this.repository.save(productImage);
   }
 }

@@ -6,6 +6,7 @@ import { ProductImageUrl } from '@/domain/object/product/product-image-url';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { Product } from './product.entity';
 import { ProductId } from '@/domain/object/product/product-id.object';
+import { CreatorId } from '@/domain/object/creator/creator-id.object';
 
 @Entity({ synchronize: false })
 @ObjectType()
@@ -25,6 +26,10 @@ export class ProductImage {
   @JoinColumn({ name: 'creatorId' })
   @Field(() => Creator)
   creator: Creator;
+
+  @RelationId((productImage: ProductImage) => productImage.creator)
+  @Field(() => String)
+  creatorId: CreatorId;
 
   @ManyToOne(() => Product, (product) => product.productImages)
   @JoinColumn({ name: 'productId' })

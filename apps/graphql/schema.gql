@@ -7,12 +7,18 @@ type CognitoUser {
   email: String!
 }
 
+input CreateProductImageInput {
+  file: String!
+  order: Int!
+  productId: String!
+}
+
 input CreateProductInput {
   description: String
-  hashtags: [ProductHashtag!]
+  hashtags: [ProductHashtag!] = []
   overview: String
   title: String!
-  websites: [ProductWebsite!]
+  websites: [ProductWebsite!] = []
 }
 
 type Creator {
@@ -33,6 +39,7 @@ scalar DateTime
 
 type Mutation {
   createProduct(input: CreateProductInput!): Product!
+  createProductImage(input: CreateProductImageInput!): ProductImage!
 }
 
 type Product {
@@ -56,6 +63,7 @@ input ProductHashtag {
 type ProductImage {
   createdAt: DateTime!
   creator: Creator!
+  creatorId: String!
   deletedAt: DateTime!
   order: Int!
   product: Product!
