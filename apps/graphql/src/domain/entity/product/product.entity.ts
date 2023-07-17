@@ -6,8 +6,8 @@ import { Creator } from '@/domain/entity/creator/creator.entity';
 import { ProductWebsite } from './product-website.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CreatorId } from '@/domain/object/creator/creator-id.object';
-import { ProductImage } from './product-image.entity';
-import { ProductImages } from '../aggregation/product-images.entity';
+import { ProductImage } from '@/domain/entity/product/product-image.entity';
+import { ProductImages } from '@/domain/entity/aggregation/product-images.entity';
 
 @Entity({ synchronize: false })
 @ObjectType()
@@ -45,7 +45,7 @@ export class Product {
   @Field(() => Creator)
   creator: Creator;
 
-  @OneToMany(() => ProductImage, (productImage) => productImage.creator)
+  @OneToMany(() => ProductImage, (productImage) => productImage.product)
   @JoinColumn()
   @Field(() => ProductImages, { nullable: true })
   productImages: ProductImage[];
