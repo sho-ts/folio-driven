@@ -14,6 +14,7 @@ import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
 import { ProductImage } from '@/domain/entity/product/product-image.entity';
 import { Creator } from '@/domain/entity/creator/creator.entity';
 import { PRODUCT_STATUS } from '@/domain/object/product/product-status.object';
+import { ProductImages } from '@/domain/entity/aggregation/product-images.entity';
 
 @InputType()
 export class CreateProductInput {
@@ -81,13 +82,18 @@ export class CreateProductInput {
   }
 
   getProductImages(product?: Product) {
-    return this.images.map(({ url, order }) => {
+    const items = this.images.map(({ url, order }) => {
       const productImage = new ProductImage();
       productImage.url = url;
       productImage.product = product;
       productImage.order = order;
       return productImage;
     });
+    const productImages = new ProductImages();
+    productImages.items = items;
+    productImages.total = items.length;
+
+    return productImages;
   }
 
   getCreator() {
