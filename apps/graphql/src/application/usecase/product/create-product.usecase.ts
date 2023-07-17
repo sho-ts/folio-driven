@@ -1,12 +1,9 @@
 import { CreateProductInput } from '@/application/input/product/create-product.input';
 import { CreateProductOutput } from '@/application/output/product/create-product.output';
-import { Creator } from '@/domain/entity/creator/creator.entity';
-import { ProductHashtag } from '@/domain/entity/product/product-hashtag.entity';
-import { ProductWebsite } from '@/domain/entity/product/product-website.entity';
-import { Product } from '@/domain/entity/product/product.entity';
-import { PRODUCT_STATUS } from '@/domain/object/product/product-status.object';
 import { CreatorRepository } from '@/infrastructure/repository/creator.repository';
+import { MediaRepository } from '@/infrastructure/repository/media.repository';
 import { ProductHashtagRepository } from '@/infrastructure/repository/product-hashtag.repository';
+import { ProductImageRepository } from '@/infrastructure/repository/product-image.repository';
 import { ProductWebsiteRepository } from '@/infrastructure/repository/product-website.repository';
 import { ProductRepository } from '@/infrastructure/repository/product.repository';
 import { Injectable } from '@nestjs/common';
@@ -21,53 +18,35 @@ export class CreateProductUseCase {
     private productRepository: ProductRepository,
     private productWebsiteRepository: ProductWebsiteRepository,
     private productHashtagRepository: ProductHashtagRepository,
+    private productImageRepository: ProductImageRepository,
+    private mediaRepository: MediaRepository,
     private creatorRepository: CreatorRepository,
   ) {}
 
   async handle(input: CreateProductInput) {
     try {
       const result = await this.entityManager.transaction(async (manager) => {
-        const creator = new Creator();
-        creator.cognitoId = input.cognitoId;
+        const medias = input.getMedias();
+        const uploadedMedias = await this.mediaRepository.search(medias);
+
+        if (uploadedMedias.length !== medias.length) {
+          throw new Error('自分のアップロードしたMedia以外をProduct以外に設定することはできません');
+        }
+
+        const creator = input.getCreator();
         const findCreatorResult = await this.creatorRepository.find(creator);
 
         if (!findCreatorResult) throw new Error(`Creatorが見つかりません。 cognitoId: ${creator.cognitoId}`);
 
-        // Insert Product
-        const hashtags = input.hashtags.map(({ hashtagName }) => {
-          const hashtag = new ProductHashtag();
-          hashtag.hashtagName = hashtagName;
-          return hashtag;
-        });
-        const websites = input.websites.map(({ url, websiteType }) => {
-          const website = new ProductWebsite();
-          website.url = url;
-          website.websiteType = websiteType;
-          return website;
-        });
-        const product = new Product();
-        product.title = input.title;
-        product.overview = input.overview;
-        product.description = input.description;
-        product.hashtags = hashtags;
-        product.productStatus = PRODUCT_STATUS.PUBLIC;
-        const saveProductResult = await this.productRepository.save(product, manager);
+        const product = await this.productRepository.save(input.getProduct(), manager);
 
-        // Insert ProductWebsite & ProductHashtag
-        const [saveProductWebsitesResult, saveProductHashtagsResult] = await Promise.all([
-          this.productWebsiteRepository.saveAll(
-            websites.map((website) => ({ ...website, product: saveProductResult })),
-            manager,
-          ),
-          this.productHashtagRepository.saveAll(
-            hashtags.map((hashtag) => ({ ...hashtag, product: saveProductResult })),
-            manager,
-          ),
+        await Promise.all([
+          this.productWebsiteRepository.saveAll(input.getWebsites(product), manager),
+          this.productHashtagRepository.saveAll(input.getHashtags(product), manager),
+          this.productImageRepository.saveAll(input.getProductImages(product), manager),
         ]);
-        saveProductResult.websites = saveProductWebsitesResult;
-        saveProductResult.hashtags = saveProductHashtagsResult;
 
-        return saveProductResult;
+        return product;
       });
       return new CreateProductOutput(result);
     } catch (e) {

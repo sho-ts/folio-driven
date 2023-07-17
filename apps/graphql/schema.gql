@@ -40,7 +40,6 @@ type Creator {
   deletedAt: DateTime!
   displayName: String!
   nickName: String
-  productImages: ProductImages
   products: Products
   updatedAt: DateTime!
 }
@@ -51,6 +50,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Media {
+  mediaId: String!
   mediaType: Int!
   url: String!
 }
