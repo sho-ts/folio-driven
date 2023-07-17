@@ -19,10 +19,10 @@ export const ProductCard = ({ product, className }: Props) => {
     <Link
       href={`/products/${product.productId}`}
       passHref
-      className={clsx(className, 'flex w-full flex-col border')}
+      className={clsx(className, 'flex w-full flex-col md:border')}
     >
-      <div className='relative aspect-video'>
-        <Image fill src={product?.productImages?.items?.[0]?.url ?? ''} alt='' />
+      <div className='relative aspect-square md:aspect-video'>
+        <Image fill className='object-cover' src={product?.productImages?.items?.[0]?.url ?? ''} alt='' />
       </div>
       <p className='w-full bg-white p-3'>{product.title}</p>
     </Link>
