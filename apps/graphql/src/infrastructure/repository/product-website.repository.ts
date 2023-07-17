@@ -10,11 +10,11 @@ export class ProductWebsiteRepository {
     private repository: Repository<ProductWebsite>,
   ) {}
 
-  async save(productWebsite: ProductWebsite, maneger?: EntityManager) {
-    return maneger?.getRepository(ProductWebsite)?.save(productWebsite) ?? this.repository.save(productWebsite);
+  async save(productWebsite: ProductWebsite, manager?: EntityManager) {
+    return manager?.getRepository(ProductWebsite)?.save(productWebsite) ?? this.repository.save(productWebsite);
   }
 
-  async saveAll(productWebsites: ProductWebsite[], maneger?: EntityManager) {
-    return maneger?.getRepository(ProductWebsite)?.save(productWebsites) ?? this.repository.save(productWebsites);
+  async saveAll(productWebsites: ProductWebsite[], manager?: EntityManager) {
+    return manager?.getRepository(ProductWebsite)?.save(productWebsites) ?? this.repository.save(productWebsites);
   }
 }

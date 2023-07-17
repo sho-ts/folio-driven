@@ -10,11 +10,11 @@ export class ProductHashtagRepository {
     private repository: Repository<ProductHashtag>,
   ) {}
 
-  async save(productHashtag: ProductHashtag, maneger?: EntityManager) {
-    return maneger?.getRepository(ProductHashtag)?.save(productHashtag) ?? this.repository.save(productHashtag);
+  async save(productHashtag: ProductHashtag, manager?: EntityManager) {
+    return manager?.getRepository(ProductHashtag)?.save(productHashtag) ?? this.repository.save(productHashtag);
   }
 
-  async saveAll(productHashtags: ProductHashtag[], maneger?: EntityManager) {
-    return maneger?.getRepository(ProductHashtag)?.save(productHashtags) ?? this.repository.save(productHashtags);
+  async saveAll(productHashtags: ProductHashtag[], manager?: EntityManager) {
+    return manager?.getRepository(ProductHashtag)?.save(productHashtags) ?? this.repository.save(productHashtags);
   }
 }
