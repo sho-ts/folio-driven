@@ -10,6 +10,10 @@ export class MediaRepository {
     private readonly repository: Repository<Media>,
   ) {}
 
+  search(media: Media | Media[]) {
+    return this.repository.findBy(media);
+  }
+
   save(media: Media, manager?: EntityManager) {
     return manager?.getRepository(Media)?.save(media) ?? this.repository.save(media);
   }
