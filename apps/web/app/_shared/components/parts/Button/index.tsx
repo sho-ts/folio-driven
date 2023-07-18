@@ -7,6 +7,7 @@ type Props<T extends ElementType | FC> = {
   className?: string;
   disabled?: boolean;
   fill?: boolean;
+  outline?: boolean;
 } & Omit<ComponentPropsWithRef<T>, 'as'>;
 
 export const Button = <T extends ElementType | FC = 'button'>({
@@ -15,6 +16,7 @@ export const Button = <T extends ElementType | FC = 'button'>({
   children,
   className,
   disabled,
+  outline,
   ...props
 }: Props<T>) => {
   const Tag = tag || 'button';
@@ -23,11 +25,15 @@ export const Button = <T extends ElementType | FC = 'button'>({
     <Tag
       {...props}
       className={clsx(
+        {
+          'bg-gradient-to-r from-sky-300 to-sky-400 text-white': !disabled && !outline,
+          'bg-white text-sky-400 border border-sky-400': !disabled && outline,
+          'bg-gray-200 text-gray-300': disabled,
+        },
+        {
+          'flex w-full': fill,
+        },
         'inline-flex items-center justify-center rounded px-6 py-2 transition-opacity duration-300 ease-in-out hover:opacity-80',
-        !disabled
-          ? 'bg-gradient-to-r from-sky-300 to-sky-400 text-white'
-          : 'bg-gray-200 text-gray-300',
-        fill && 'flex w-full',
         className,
       )}
     >
