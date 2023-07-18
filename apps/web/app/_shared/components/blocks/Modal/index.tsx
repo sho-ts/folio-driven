@@ -65,7 +65,7 @@ export const Modal = ({ isOpen, onRequestClose, children }: Props) => {
       />
       <div
         className={clsx(
-          'fixed left-1/2 top-1/2 max-w-screen-md -translate-x-1/2 -translate-y-1/2 overflow-auto rounded bg-white py-4 px-2',
+          'fixed left-1/2 top-1/2 max-w-screen-sm -translate-x-1/2 -translate-y-1/2 overflow-auto rounded bg-white py-4 px-2 md:py-8 md:px-6',
           styles.content,
         )}
       >
