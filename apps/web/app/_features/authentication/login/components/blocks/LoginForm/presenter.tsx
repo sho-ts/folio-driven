@@ -2,7 +2,7 @@
 
 import { FormControl } from '@/app/_shared/components/blocks';
 import { Button, TextField } from '@/app/_shared/components/parts';
-import { AuthenticationForm } from '../AuthenticationForm';
+import { AuthenticationForm } from '@/app/_features/authentication/core/components/blocks/AuthenticationForm';
 import { useForm } from 'react-hook-form';
 import { Schema, schema } from './schema';
 import { zodResolver } from '@hookform/resolvers/zod';
