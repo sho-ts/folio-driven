@@ -1,11 +1,11 @@
 import {
   ProductCards,
   ProductCardsFragment,
-} from '../_features/product/components/blocks/ProductCards';
+} from '@/app/_features/product/core/components/blocks/ProductCards';
 import { gql } from '@apollo/client';
-import { getClient } from '../_shared/libs/apollo';
+import { getClient } from '@/app/_shared/libs/apollo';
+import { Header, Main } from '@/app/_shared/components/layouts';
 import { Fragment } from 'react';
-import { Header, Main } from '../_shared/components/layouts';
 
 const query = gql`
   query Home {

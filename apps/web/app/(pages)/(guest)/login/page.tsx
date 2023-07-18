@@ -1,4 +1,4 @@
-import { LoginTemplate } from '@/app/_features/authentication/components/templates';
+import { LoginTemplate } from '@/app/_features/authentication/login/components/templates';
 import { Header, Main } from '@/app/_shared/components/layouts';
 import { Fragment } from 'react';
 
