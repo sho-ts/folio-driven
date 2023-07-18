@@ -30,7 +30,7 @@ export const Navigation = () => {
               <NavButton label='検索'>
                 <AiOutlineSearch size={24} />
               </NavButton>
-              <NavButton label='投稿'>
+              <NavButton as={Link} href='/products/create' label='投稿'>
                 <AiOutlineAppstoreAdd size={24} />
               </NavButton>
               <NavButton label='メッセージ'>
