@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: 'https://fragrant-shadow-9470.fly.dev/',
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
   });
 
   return new NextSSRApolloClient({
