@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export class ServerActionStorage implements ICognitoStorage {
   setItem(key: string, value: string) {
     cookies().set(key, value, {
-      httpOnly: true,
       // ローカル開発の時はhttpでも使用できるようにする
       secure: process.env.NODE_ENV !== 'development',
     });
@@ -40,7 +39,6 @@ export class MiddlewareStorage implements ICognitoStorage {
 
   setItem(key: string, value: string) {
     this.response.cookies.set(key, value, {
-      httpOnly: true,
       secure: process.env.NODE_ENV !== 'development',
     });
   }
