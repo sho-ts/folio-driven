@@ -27,7 +27,7 @@ export class CreateProductUseCase {
     try {
       const result = await this.entityManager.transaction(async (manager) => {
         const medias = input.getMedias();
-        const uploadedMedias = await this.mediaRepository.search(medias);
+        const uploadedMedias = medias.length > 0 ? await this.mediaRepository.search(medias) : [];
 
         if (uploadedMedias.length !== medias.length) {
           throw new Error('自分のアップロードしたMedia以外をProduct以外に設定することはできません');
