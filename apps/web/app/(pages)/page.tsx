@@ -1,9 +1,10 @@
+'use client';
+
 import {
   ProductCards,
   ProductCardsFragment,
 } from '@/app/_features/product/core/components/blocks/ProductCards';
-import { gql } from '@apollo/client';
-import { getClient } from '@/app/_shared/libs/apollo';
+import { gql, useQuery } from '@apollo/client';
 import { Header, Main } from '@/app/_shared/components/layouts';
 import { Fragment } from 'react';
 
@@ -16,16 +17,14 @@ const query = gql`
   ${ProductCardsFragment}
 `;
 
-const Home = async () => {
-  const { data } = await getClient().query({
-    query,
-  });
+const Home = () => {
+  const { data } = useQuery(query);
 
   return (
     <Fragment>
       <Header title='ホーム' />
       <Main>
-        <ProductCards products={data.products} />
+        <ProductCards products={data?.products} />
       </Main>
     </Fragment>
   );

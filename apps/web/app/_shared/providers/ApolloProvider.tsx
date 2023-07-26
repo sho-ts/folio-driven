@@ -10,8 +10,20 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { loadErrorMessages, loadDevMessages } from '@apollo/client/dev';
 import { setVerbosity } from 'ts-invariant';
-import { getSession } from '../libs/cognito';
-import { CognitoUserPool, ICognitoStorage } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUserSession, ICognitoStorage } from 'amazon-cognito-identity-js';
+
+const getSession = (userPool: CognitoUserPool) => {
+  const user = userPool.getCurrentUser();
+
+  return new Promise<CognitoUserSession | null>((resolve, reject) => {
+    if (!user) return resolve(null);
+
+    user.getSession((error: Error | null, session: CognitoUserSession | null) => {
+      if (error) return reject(error);
+      resolve(session);
+    });
+  });
+};
 
 class ClientSideStorage implements ICognitoStorage {
   getItem(key: string) {
