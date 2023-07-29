@@ -38,15 +38,17 @@ export class CreateProductUseCase {
 
         if (!findCreatorResult) throw new Error(`Creatorが見つかりません。 cognitoId: ${creator.cognitoId}`);
 
-        const product = await this.productRepository.save(input.getProduct(), manager);
+        const product = input.getProduct();
+        product.creator = findCreatorResult;
+        const saveProductResult = await this.productRepository.save(product, manager);
 
         await Promise.all([
-          this.productWebsiteRepository.saveAll(input.getWebsites(product), manager),
-          this.productHashtagRepository.saveAll(input.getHashtags(product), manager),
-          this.productImageRepository.saveAll(input.getProductImages(product), manager),
+          this.productWebsiteRepository.saveAll(input.getWebsites(saveProductResult), manager),
+          this.productHashtagRepository.saveAll(input.getHashtags(saveProductResult), manager),
+          this.productImageRepository.saveAll(input.getProductImages(saveProductResult), manager),
         ]);
 
-        return product;
+        return saveProductResult;
       });
       return new CreateProductOutput(result);
     } catch (e) {
