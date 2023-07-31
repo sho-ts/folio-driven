@@ -5,10 +5,12 @@ import { Modal } from '@/app/_shared/components/blocks/Modal';
 import { Button, TextField } from '@/app/_shared/components/parts';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useModal } from '@/app/_shared/hooks';
 import { toast } from 'react-hot-toast';
+import { gql, useMutation } from '@apollo/client';
 
 const schema = z.object({
   title: z
@@ -24,7 +26,17 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
+const query = gql`
+  mutation CreateProduct($input: CreateProductInput!) {
+    createProduct(input: $input) {
+      productId
+    }
+  }
+`;
+
 export const CreateProductForm = () => {
+  const router = useRouter();
+  const [mutate, { loading, data }] = useMutation(query);
   const [isOpen, handleModalOpen, handleModalClose] = useModal();
   const {
     handleSubmit,
@@ -36,19 +48,43 @@ export const CreateProductForm = () => {
   });
 
   const onConfirm = useCallback(
-    (data: Schema) => {
-      console.log(data);
+    (_data: Schema) => {
       handleModalOpen();
     },
     [handleModalOpen],
   );
 
+  const onSubmit = useCallback(
+    async (data: Schema) => {
+      try {
+        await mutate({
+          variables: {
+            input: {
+              title: data.title,
+              description: data.description,
+            },
+          },
+          update: (cache, { data }) => {
+            // キャッシュの更新
+          },
+        });
+        toast.success('新規投稿に成功しました');
+        router.push('/');
+      } catch (e) {
+        toast.error('投稿に失敗しました');
+        handleModalClose();
+      }
+    },
+    [mutate, handleModalClose, router],
+  );
+
+  const onError = useCallback(() => {
+    toast.error('入力内容を修正してください');
+    handleModalClose();
+  }, [handleModalClose]);
+
   return (
-    <Form
-      onSubmit={handleSubmit(onConfirm, () => {
-        toast.error('入力内容を修正してください');
-      })}
-    >
+    <Form onSubmit={handleSubmit(onConfirm, onError)}>
       <FormControl
         errors={[errors.title?.message]}
         render={(props) => (
@@ -76,7 +112,9 @@ export const CreateProductForm = () => {
           <p>{watch('overview')}</p>
           <p>{watch('description')}</p>
           <div className='flex flex-col gap-4 md:flex-row'>
-            <Button fill>新規投稿</Button>
+            <Button disabled={loading || !!data} fill onClick={handleSubmit(onSubmit, onError)}>
+              新規投稿
+            </Button>
             <Button fill outline onClick={handleModalClose}>
               修正
             </Button>
