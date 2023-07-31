@@ -26,7 +26,7 @@ const schema = z.object({
 
 type Schema = z.infer<typeof schema>;
 
-const query = gql`
+const CREATE_PRODUCT = gql`
   mutation CreateProduct($input: CreateProductInput!) {
     createProduct(input: $input) {
       productId
@@ -36,7 +36,7 @@ const query = gql`
 
 export const CreateProductForm = () => {
   const router = useRouter();
-  const [mutate, { loading, data }] = useMutation(query);
+  const [mutate, { loading, data }] = useMutation(CREATE_PRODUCT);
   const [isOpen, handleModalOpen, handleModalClose] = useModal();
   const {
     handleSubmit,

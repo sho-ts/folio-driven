@@ -8,7 +8,7 @@ import { gql, useQuery } from '@apollo/client';
 import { Header, Main } from '@/app/_shared/components/layouts';
 import { Fragment } from 'react';
 
-const query = gql`
+const HOME = gql`
   query Home {
     products {
       ...ProductCardsFragment
@@ -18,7 +18,7 @@ const query = gql`
 `;
 
 const Home = () => {
-  const { data } = useQuery(query);
+  const { data } = useQuery(HOME);
 
   return (
     <Fragment>
