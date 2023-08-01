@@ -2,11 +2,11 @@ import { Header, Layout, Main, Navigation } from '@/app/_shared/components/layou
 import { Toaster } from 'react-hot-toast';
 import { Provider } from '../_shared/providers';
 
-type Props = {
-  children?: React.ReactNode;
-};
+// type Props = {
+//   children?: React.ReactNode;
+// };
 
-const PageLayout = ({ children }: Props) => {
+const PageLayout = ({ children }: any) => {
   return (
     <Provider>
       <Toaster position='top-right' />

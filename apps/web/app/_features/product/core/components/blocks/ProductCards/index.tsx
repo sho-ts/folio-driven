@@ -1,10 +1,10 @@
-import { gql } from '@apollo/client';
 import { ProductCardsFragmentFragment } from '@/schema/graphql';
 import { ProductCard } from './ProductCard';
+import { graphql } from 'babel-plugin-relay/macro';
 import styles from './ProductCards.module.scss';
 
-export const ProductCardsFragment = gql`
-  fragment ProductCardsFragment on Products {
+export const ProductCardsFragment = graphql`
+  fragment ProductCards_products on Products {
     total
     items {
       productId

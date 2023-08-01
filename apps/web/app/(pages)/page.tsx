@@ -1,30 +1,42 @@
 'use client';
 
-import {
-  ProductCards,
-  ProductCardsFragment,
-} from '@/app/_features/product/core/components/blocks/ProductCards';
-import { gql, useQuery } from '@apollo/client';
 import { Header, Main } from '@/app/_shared/components/layouts';
-import { Fragment } from 'react';
+import { Fragment, Suspense } from 'react';
+import { graphql } from 'babel-plugin-relay/macro';
+import { usePreloadedQuery, loadQuery } from 'react-relay';
+import { environment } from '@/RelayEnvironment';
 
-const HOME = gql`
-  query Home {
+// page.tsxに書いてしまうとrelayの規約でpageQueryという名前になってしまうので別コンポーネントに移動すること
+const HOME_QUERY = graphql`
+  query pageQuery {
     products {
-      ...ProductCardsFragment
+      ...ProductCards_products
     }
   }
-  ${ProductCardsFragment}
 `;
 
+const preloadedQuery = loadQuery(environment, HOME_QUERY, {
+  /* query variables */
+});
+
+const Wrap = () => {
+  const data = usePreloadedQuery(HOME_QUERY, preloadedQuery) as any;
+  console.log(data);
+  return <div>hogehoge</div>;
+};
+
 const Home = () => {
-  const { data } = useQuery(HOME);
+  const data = usePreloadedQuery(HOME_QUERY, preloadedQuery) as any;
+
+  console.log(data);
 
   return (
     <Fragment>
       <Header title='ホーム' />
       <Main>
-        <ProductCards products={data?.products} />
+        <Suspense fallback={<p>test</p>}>
+          <Wrap />
+        </Suspense>
       </Main>
     </Fragment>
   );
